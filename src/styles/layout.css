@@ -1,0 +1,140 @@
+.app-container {
+  width: 720px;
+  background: rgba(11, 7, 7, 0.93);
+  backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: all 0.2s ease-out;
+}
+
+.app-container.chat-mode {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  background: rgba(10, 5, 5, 0.95);
+  box-shadow: none;
+  position: relative;
+}
+
+.app-container.resizing {
+  transition: none !important;
+  user-select: none !important;
+  cursor: nwse-resize !important;
+}
+
+.resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nwse-resize;
+  background: transparent;
+  border: none;
+  z-index: 100;
+  -webkit-app-region: no-drag;
+}
+
+.resize-square {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Layout Misc */
+.header-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* Title Bar & Window Controls */
+.title-bar {
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  background: transparent;
+  -webkit-app-region: drag;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 1000;
+}
+
+.drag-region {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.app-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  -webkit-app-region: no-drag;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(185, 28, 28, 0.85);
+  color: #ffffff;
+}
+
+.minimize-btn {
+  opacity: 0.7;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.minimize-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.minimize-icon {
+  color: var(--text-muted);
+}
+

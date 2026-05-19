@@ -1,0 +1,112 @@
+/* Voice Recorder Styles */
+
+.voice-mode {
+  width: 480px;
+  max-width: 480px;
+  background: rgba(18, 18, 18, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.voice-recorder-section {
+  flex: 1;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  min-height: 240px;
+}
+
+.waveform-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 60px;
+}
+
+.waveform-bar {
+  width: 3px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  animation: waveform-pulse 1.2s infinite ease-in-out;
+}
+
+@keyframes waveform-pulse {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleY(1.8);
+    opacity: 1;
+  }
+}
+
+.mic-circle {
+  width: 56px;
+  height: 56px;
+  background: var(--text-main);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-dark);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  margin: 0 16px;
+  position: relative;
+}
+
+.listening-status {
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.transcription-area {
+  width: calc(100% - 24px);
+  margin: 10px 12px 20px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  padding: 20px;
+  color: var(--text-main);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: left;
+  height: 160px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-sizing: border-box;
+}
+
+.transcription-area::-webkit-scrollbar {
+  width: 4px;
+}
+
+.transcription-area::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.text-confirmed {
+  color: var(--text-main);
+}
+
+.text-typing {
+  color: #00f2ff;
+  text-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+}
+
+.transcribing-indicator {
+  display: inline-block;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-left: 8px;
+  font-size: 14px;
+}

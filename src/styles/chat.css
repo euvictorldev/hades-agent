@@ -1,0 +1,382 @@
+/* Mini Chat Styles */
+
+.chat-header {
+  height: 60px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  -webkit-app-region: drag;
+  user-select: none;
+  z-index: 100;
+  gap: 8px;
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0; /* allows text to truncate rather than push buttons off-screen */
+}
+
+.title-with-timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-title h1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.timer-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Header separator | between title and timer */
+.header-separator {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 1px;
+  flex-shrink: 0;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.06);
+}
+
+/* Red pulsing dot next to timer */
+.timer-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+  flex-shrink: 0;
+  animation: timer-pulse 2s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%   { opacity: 0.5; transform: scale(0.9); }
+  50%  { opacity: 1;   transform: scale(1.15); }
+  100% { opacity: 0.5; transform: scale(0.9); }
+}
+
+/* Plain timer text, no card */
+.chat-timer-text {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(255, 255, 255, 0.4);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Legacy .chat-timer kept only for Susurro mode override compatibility */
+.chat-timer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: rgba(255, 255, 255, 0.4);
+  font-variant-numeric: tabular-nums;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  cursor: help;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.chat-timer:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.usage-popup {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: rgba(20, 20, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 200;
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.info-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.info-wrapper:hover .usage-popup {
+  opacity: 1;
+}
+
+.chat-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0; /* never let buttons get clipped at small window sizes */
+  -webkit-app-region: no-drag;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.action-btn.active {
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+}
+
+.action-btn.close-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* Performance: disable heavy effects during window resize */
+.app-container.resizing {
+  pointer-events: none;
+}
+
+.app-container.resizing .chat-content,
+.app-container.resizing .chat-input {
+  backdrop-filter: none !important;
+  background: rgba(20, 20, 25, 0.95) !important;
+}
+
+.app-container.resizing * {
+  transition: none !important;
+  animation: none !important;
+}
+
+.chat-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.messages-list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.message-bubble {
+  max-width: 85%;
+  padding: 8px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  position: relative;
+  width: fit-content;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.message-bubble.user {
+  align-self: flex-end;
+  background: rgba(255, 255, 255, 0.1);
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.message-bubble.ia {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom-left-radius: 4px;
+  padding-top: 24px;
+}
+
+.message-bubble.ia.thinking-indicator {
+  background: transparent;
+  border: none;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.message-bubble.pending {
+  opacity: 0.75;
+  filter: grayscale(0.2);
+}
+
+.status-label.pending {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* Copy Button */
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: var(--text-main);
+  padding: 2px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.message-bubble.ia:hover .copy-btn {
+  opacity: 1;
+}
+
+.copy-btn:hover {
+  background: rgba(37, 99, 235, 0.3);
+  color: var(--accent-light);
+}
+
+/* Markdown Content Styles */
+.message-bubble.ia p {
+  margin: 0 0 8px 0;
+}
+
+.message-bubble.ia p:last-child {
+  margin-bottom: 0;
+}
+
+.message-bubble.ia ul,
+.message-bubble.ia ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.message-bubble.ia code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9em;
+}
+
+.message-bubble.ia pre {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.message-bubble.ia pre code {
+  background: transparent;
+  padding: 0;
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Glint shimmer effect for thinking/tool indicator text */
+@keyframes glint {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.glint-text {
+  background: linear-gradient(
+    90deg,
+    rgba(220, 38, 38, 0.4) 0%,
+    rgba(220, 38, 38, 0.4) 35%,
+    rgba(239, 68, 68, 0.95) 50%,
+    rgba(220, 38, 38, 0.4) 65%,
+    rgba(220, 38, 38, 0.4) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glint 2s linear infinite;
+}
+
+
+/* Message Image Styles */
+.message-image {
+  margin-bottom: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.message-image img {
+  width: 100%;
+  max-height: 300px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+}

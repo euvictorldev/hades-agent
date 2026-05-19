@@ -1,0 +1,45 @@
+{
+  "name": "Hades",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev:react": "vite",
+    "dev:electron": "wait-on http://localhost:3000 && electron .",
+    "dev": "npx kill-port 3000 && concurrently \"npm run dev:react\" \"npm run dev:electron\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
+    "electron": "^42.0.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "vite": "^8.0.11",
+    "vitest": "^4.1.6",
+    "wait-on": "^9.0.5"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^7.3.1",
+    "@google/genai": "^2.2.0",
+    "@google/generative-ai": "^0.24.1",
+    "@huggingface/transformers": "^4.2.0",
+    "@vitalets/google-translate-api": "^9.2.1",
+    "axios": "^1.16.0",
+    "google-translate-api-browser": "^5.0.0",
+    "lucide-react": "^1.14.0",
+    "react-markdown": "^10.1.0",
+    "recordrtc": "^5.6.2",
+    "remark-gfm": "^4.0.1",
+    "turndown": "^7.2.4",
+    "ws": "^8.20.0"
+  }
+}

@@ -1,0 +1,94 @@
+/* Command Bar Styles */
+
+.command-mode {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 720px;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 38, 38, 0.4);
+}
+
+.command-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+  box-sizing: border-box;
+  -webkit-app-region: drag;
+  position: relative;
+}
+
+.command-icon {
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+}
+
+.command-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  padding: 2px 0;
+  margin: 0;
+  letter-spacing: 0.2px;
+  -webkit-app-region: no-drag;
+  resize: none;
+  font-family: inherit;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-height: 24px;
+}
+
+.command-input::placeholder {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.command-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding: 12px 32px;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(220, 38, 38, 0.2);
+  position: relative;
+}
+
+.footer-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  -webkit-app-region: no-drag;
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.footer-btn:hover {
+  opacity: 0.8;
+}
+
+.keycap-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.5px;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(-50%) scale(0.9); }
+  to { opacity: 1; transform: translateY(-50%) scale(1); }
+}

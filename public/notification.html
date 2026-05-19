@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+    body { 
+      margin: 0; 
+      overflow: hidden; 
+      font-family: 'Inter', sans-serif; 
+      display: flex; 
+      justify-content: center; 
+      background: transparent;
+    }
+    .notification {
+      background: rgba(15, 15, 20, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 50px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .notification.show { 
+      transform: translateY(20px); 
+      opacity: 1; 
+    }
+    .icon { 
+      width: 12px; 
+      height: 12px; 
+      background: #60a5fa; 
+      border-radius: 50%; 
+      box-shadow: 0 0 12px #60a5fa; 
+    }
+  </style>
+</head>
+<body>
+  <div id="notif" class="notification">
+    <div class="icon"></div>
+    <span id="text">Tarefa concluída!</span>
+  </div>
+  <audio id="pop" src="audio/bubble-pop.mp3"></audio>
+  <script>
+    const el = document.getElementById('notif');
+    const textEl = document.getElementById('text');
+    const audio = document.getElementById('pop');
+
+    window.electron.onNotify((message) => {
+      textEl.innerText = message;
+      
+      // Reset state
+      el.classList.remove('show');
+      
+      setTimeout(() => {
+        el.classList.add('show');
+        audio.currentTime = 0;
+        audio.play().catch(e => console.error("Audio play blocked", e));
+        
+        setTimeout(() => {
+          el.classList.remove('show');
+          setTimeout(() => { 
+            window.electron.notifHidden(); 
+          }, 600);
+        }, 3500); // 3.5 seconds visible
+      }, 50);
+    });
+  </script>
+</body>
+</html>
