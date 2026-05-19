@@ -1,11 +1,11 @@
 # 🌋 Hades Desktop AI Agent
 
 <p align="center">
-  <img src="public/icon/icon.png" width="128" height="128" style="border-radius: 8px 32px 8px 32px; border: 2px solid #dc2626;" alt="Hades Logo" />
+  <img src="public/icon/icon.png" width="140" height="140" style="border-radius: 8px 32px 8px 32px; border: 2px solid #ff2a2a; box-shadow: 0 20px 40px rgba(255, 42, 42, 0.15);" alt="Hades Logo" />
 </p>
 
 <p align="center">
-  <strong>A premium, ultra-fast, local desktop AI assistant built on Electron, React, and Google Gemini.</strong>
+  <strong>A weightless, ultra-fast, spatial desktop AI assistant built on Electron, React, and Google Gemini.</strong>
 </p>
 
 <p align="center">
@@ -17,36 +17,58 @@
 
 ---
 
-## ⚡ Overview
+## ⚡ Concept & Design Philosophy
 
-**Hades** is a cutting-edge desktop agent designed for developers who want a seamless, highly reactive, and visually stunning AI integration. Named after the ruler of the underworld, it sports a curated dark theme with deep crimson gradients, micro-animations, and custom retro-futuristic arcade typography (`Press Start 2P`).
+**Hades** is not a conventional flat web-app-in-a-box. It is designed around the principles of **Antigravity Design**—creating a weightless, highly spatial, and layered user interface that feels alive.
 
-Hades provides immediate utility through floating layouts, system audio synthesis, translation pipelines, and highly customizable AI personas.
+*   **🪶 Weightlessness:** Floating cards, transparent backdrops, and soft diffused shadows (`box-shadow: 0 20px 40px rgba(0,0,0,0.5)`) create a glassy, premium feel.
+*   **🔮 Glassmorphism:** Subtle translucency using `backdrop-filter: blur(16px)` combined with ultra-thin semi-transparent borders for high-end contrast.
+*   **🩸 Continuous Gradients & Retro Aesthetics:** Visual palettes rely on harmonious HSL crimson-to-dark-underworld gradients, paired with retro-arcade typography (`Press Start 2P`) for a distinct sci-fi aesthetic.
+*   **🕹️ Dynamic Smoothness:** State changes (hovers, focus states, activations) never snap. They utilize smooth transitions (`0.3s cubic-bezier(0.16, 1, 0.3, 1)`) to offload GPU rendering via `will-change`.
+
+---
+
+## 📦 Spatial Architecture
+
+Hades manages multiple independent, transparent, and floating renderer windows coordinated by a robust backend. Here is how the spatial systems align:
+
+```mermaid
+graph TD
+    classDef main fill:#1a0505,stroke:#ff2a2a,stroke-width:2px,color:#fff;
+    classDef float fill:#0a0303,stroke:#dc2626,stroke-width:1px,color:#fff;
+    classDef service fill:#111,stroke:#888,stroke-width:1px,color:#aaa;
+
+    Main[Electron Main Process]:::main
+    
+    subgraph Floating_Windows [Weightless UI Overlays]
+        CommandBar[Alt+D: Spotlight Command Bar]:::float
+        MiniChat[MiniChat Floating Window]:::float
+        Susurro[Alt+B: Susurro Voice HUD]:::float
+        Settings[Settings Panel]:::float
+    end
+    
+    SSoT[ElectronService SSoT Bridge]:::service
+    Store[JsonStore Local DB]:::service
+
+    Main -->|Orchestrates Window State| Floating_Windows
+    Floating_Windows -->|Typed IPC Calls| SSoT
+    SSoT -->|Electron Bridge| Main
+    Main -->|Persists config/history| Store
+```
 
 ---
 
 ## ✨ Key Features
 
-*   **🌋 Susurro (Voice Assistant):** Activated via custom hotkeys (`Alt+B`), this module streams and transcribes system audio and microphone inputs in real-time. It processes raw audio using Gemini Flash, generating contextual suggestions in a custom HUD.
-*   **💬 MiniChat Window:** A sleek, lightweight, floating overlay that allows instant interaction with models like `gemini-2.5-flash` without disrupting your primary screen workspace.
-*   **⌨️ Command Bar (`Alt+D`):** A spotlight-like launcher that takes quick text queries, performs real-time searches using Tavily, and returns rich answers with markdown support.
-*   **🕶️ Stealth Mode:** Premium security feature that dynamically applies system-level window exclusion (`setContentProtection`) to hide the Hades interface entirely from screen recorders, capture software, and streaming platforms.
-*   **🎭 Custom AI Personas:** Deep integration with Google AI Studio's models, allowing you to define, persist, and switch custom System Prompts and custom RAG data structures dynamically.
-*   **💾 Local Storage & Privacy:** All chat histories, task records, and settings are saved locally on the user's machine (outside the repository folder) inside standard `userData` directories, keeping all data fully private.
+*   **🎙️ Susurro (Voice Assistant):** Activated via `Alt+B`, this module performs real-time speech-to-text utilizing Gemini Flash. It streams microphone and system audio, delivering modular, context-aware suggestions directly onto your viewport.
+*   **💬 MiniChat Overlay:** A lightweight, non-intrusive floating canvas. Perfect for coding guidance, quick reviews, and prompt testing without breaking your current workflow.
+*   **⌨️ Spotlight Command Bar (`Alt+D`):** A beautiful, centralized search launcher. Takes raw inputs, queries Tavily for live web intelligence, and displays gorgeous, formatted markdown results.
+*   **🕶️ Screen-Recording Stealth Mode:** Utilizing hardware-level window protection (`setContentProtection`), Hades is completely invisible to screen captures, recorders, and streaming tools—keeping your credentials and private codes fully secure.
+*   **🎭 Local Persona Management:** Dynamically create, configure, and save customized AI personas with specific system prompts, saved in a persistent JSON database.
 
 ---
 
-## 🏗️ Architecture & Clean Code Rules
-
-Hades follows a highly strict modular architecture, as detailed in [STRUCTURE.md](STRUCTURE.md):
-
-*   **Single Source of Truth (SSoT):** Electron IPC operations are centralized inside `src/services/electron.ts`. All TypeScript signatures are strictly typed under `src/types/electron.ts`.
-*   **Orchestrator/Logic Pattern (Hooks):** UI remains completely decoupled from operational logic. React custom hooks under `src/hooks/` handle asynchronous cycles under a strict 300-line limit per file.
-*   **Optimized Utilities:** Audio conversion pipelines (`src/utils/audio.ts`) and Gemini API payload builders (`src/utils/ai.ts`) are isolated and optimized for maximum speed.
-
----
-
-## 🚀 Quick Start
+## 🛠️ Installation & Setup
 
 ### Prerequisites
 
@@ -58,68 +80,54 @@ Hades follows a highly strict modular architecture, as detailed in [STRUCTURE.md
 Clone the repository and install the dependencies:
 
 ```bash
-git clone https://github.com/your-username/Hades-Agent.git
+git clone https://github.com/victorl-dev/Hades-Agent.git
 cd Hades-Agent
 npm install
 ```
 
-### 2. Configuration
+### 2. Configure API Keys
 
-Hades requires API keys for Google Gemini and Tavily Search. 
+Hades utilizes Google Gemini and Tavily Search APIs.
 
-1. Copy the example environment file:
+1. Copy the environment configuration template:
    ```bash
    cp .env.example .env
    ```
-2. Open `.env` and paste your API keys:
+2. Open `.env` and fill in your credentials:
    ```env
-   VITE_GEMINI_API_KEY=your_google_gemini_api_key
-   VITE_TAVILY_API_KEY=your_tavily_search_api_key
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   VITE_TAVILY_API_KEY=your_tavily_api_key_here
    ```
-   *(Note: The `.env` file is protected and listed under `.gitignore` so it will never leak to public repositories).*
+   *(Note: The `.env` file is protected locally and ignored by Git to prevent exposure).*
 
-### 3. Running in Development
+### 3. Run in Development Mode
 
-Start both Vite (for the frontend) and Electron processes concurrently:
+Run the React frontend build and launch the Electron application concurrently:
 
 ```bash
 npm run dev
 ```
 
+### 4. Build for Production
+
+Compile your production-ready client bundles using Vite:
+
+```bash
+npm run build
+```
+
 ---
 
-## ⌨️ Global Shortcuts
+## ⌨️ Hotkeys
 
-Hades is designed for low-friction, keyboard-only desktop navigation:
-
-| Shortcut | Action | Window |
+| Shortcut | Action | Destination |
 | :--- | :--- | :--- |
 | `Alt+D` | Toggle Spotlight Launcher | **Command Bar** |
-| `Alt+B` | Open / Trigger Real-time Speech-to-Text | **Susurro Voice HUD** |
-| `Esc` | Stop Recording / Close Window | **All Windows** |
-
----
-
-## 📁 Repository Structure
-
-```
-├── electron/              # Electron Main Process files
-│   ├── ipc/               # IPC Main Handlers
-│   ├── services/          # Backend Services (AI, Logging, Audio)
-│   └── store/             # JsonStore persistence layer
-├── src/                   # React Frontend (Vite)
-│   ├── components/        # Specialized modular UI Components
-│   ├── hooks/             # Clean Logic & Orchestration Hooks
-│   ├── services/          # SSoT Electron IPC bridge
-│   ├── styles/            # Vanilla CSS design system
-│   └── utils/             # High performance utilities (Audio, Image, AI)
-├── .env.example           # Secure template for variables
-├── STRUCTURE.md           # Developer guidelines & architectural rules
-└── package.json           # Scripts and dependencies
-```
+| `Alt+B` | Open / Start Real-time Speech-to-Text | **Susurro Voice HUD** |
+| `Esc` | Stop Recording / Hide active UI | **All Panels** |
 
 ---
 
 ## 🛡️ License
 
-This project is licensed under the **ISC License**. Feel free to use, modify, and distribute it for personal and commercial applications.
+This project is licensed under the **ISC License**. Developed with passion by [victorl-dev](https://github.com/victorl-dev).
