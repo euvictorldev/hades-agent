@@ -67,8 +67,8 @@ const Splash: React.FC = () => {
           transition: transformTransition,
           display: 'flex',
           alignItems: 'center',
-          gap: '24px',
-          padding: '16px',
+          gap: '16px',
+          padding: '8px',
         }}
       >
         {/* CONTAINER DO ÍCONE: Isolado para redimensionamento independente */}

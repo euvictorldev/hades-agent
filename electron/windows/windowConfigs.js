@@ -177,8 +177,8 @@ const windowConfigs = {
     }
   },
   splash: {
-    width: 960,
-    height: 240,
+    width: 900,
+    height: 180,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -197,8 +197,8 @@ const windowConfigs = {
     onInit: (win) => {
       const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
       win.setPosition(
-        Math.floor((sw - 960) / 2),
-        Math.floor((sh - 240) / 2)
+        Math.floor((sw - 900) / 2),
+        Math.floor((sh - 180) / 2)
       );
       win.setAlwaysOnTop(true, 'screen-saver');
       win.once('ready-to-show', () => {
