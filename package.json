@@ -6,10 +6,36 @@
   "scripts": {
     "dev:react": "vite",
     "dev:electron": "wait-on http://localhost:3000 && electron .",
-    "dev": "npx kill-port 3000 && concurrently \"npm run dev:react\" \"npm run dev:electron\"",
+    "dev": "taskkill /F /IM electron.exe 2>nul & npx kill-port 3000 && concurrently \"npm run dev:react\" \"npm run dev:electron\"",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "build:app": "vite build",
+    "package": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.victorl.hades",
+    "productName": "Hades Agent",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "public/**/*",
+      "prompts/**/*",
+      "main.js",
+      "preload.js",
+      "translation-worker.js",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "keywords": [],
   "author": "",
@@ -21,9 +47,11 @@
     "@vitejs/plugin-react": "^6.0.1",
     "concurrently": "^9.2.1",
     "electron": "^42.0.1",
+    "electron-builder": "^26.8.1",
     "figlet": "^1.11.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "to-ico": "^1.1.5",
     "vite": "^8.0.11",
     "vitest": "^4.1.6",
     "wait-on": "^9.0.5"
@@ -35,6 +63,7 @@
     "@huggingface/transformers": "^4.2.0",
     "@vitalets/google-translate-api": "^9.2.1",
     "axios": "^1.16.0",
+    "electron-log": "^5.4.4",
     "google-translate-api-browser": "^5.0.0",
     "lucide-react": "^1.14.0",
     "react-hotkeys-hook": "^5.3.2",

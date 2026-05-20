@@ -19,6 +19,7 @@ const windowConfigs = {
     height: 480,
     frame: false,
     transparent: true,
+    hasShadow: false,
     alwaysOnTop: true,
     show: false,
     resizable: true,
@@ -29,6 +30,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
       backgroundThrottling: false,
     },
     onInit: (win) => {
@@ -42,7 +44,8 @@ const windowConfigs = {
     height: 490,
     frame: false,
     transparent: true,
-    alwaysOnTop: false,
+    hasShadow: false,
+    alwaysOnTop: true,
     show: false,
     resizable: true,
     minWidth: 400,
@@ -53,6 +56,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
       backgroundThrottling: false,
     },
     onInit: (win) => {
@@ -66,6 +70,7 @@ const windowConfigs = {
     height: 420,
     frame: false,
     transparent: true,
+    hasShadow: false,
     alwaysOnTop: true,
     show: false,
     resizable: false,
@@ -75,6 +80,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
     },
     onInit: (win) => {
       if (process.platform === 'win32') win.setBackgroundMaterial('mica');
@@ -85,6 +91,7 @@ const windowConfigs = {
     height: 520,
     frame: false,
     transparent: true,
+    hasShadow: false,
     alwaysOnTop: true,
     show: false,
     resizable: false,
@@ -94,6 +101,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
     },
     onInit: (win) => {
       if (process.platform === 'win32') win.setBackgroundMaterial('mica');
@@ -104,6 +112,7 @@ const windowConfigs = {
     height: 680,
     frame: false,
     transparent: true,
+    hasShadow: false,
     alwaysOnTop: false,
     show: false,
     resizable: true,
@@ -115,6 +124,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
       backgroundThrottling: false,
     },
     onInit: (win) => {
@@ -126,6 +136,7 @@ const windowConfigs = {
     height: 60,
     frame: false,
     transparent: true,
+    hasShadow: false,
     alwaysOnTop: true,
     show: false,
     resizable: false,
@@ -136,6 +147,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
     },
     onInit: (win) => {
       const { width: screenWidth } = screen.getPrimaryDisplay().workAreaSize;
@@ -147,6 +159,7 @@ const windowConfigs = {
     height: 100,
     frame: false,
     transparent: true,
+    hasShadow: false,
     alwaysOnTop: true,
     resizable: false,
     show: false,
@@ -155,7 +168,8 @@ const windowConfigs = {
     webPreferences: {
       preload: preloadPath,
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      sandbox: true
     },
     onInit: (win) => {
       const { width: screenWidth } = screen.getPrimaryDisplay().workArea;
@@ -178,6 +192,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
     },
     onInit: (win) => {
       const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
@@ -185,6 +200,7 @@ const windowConfigs = {
         Math.floor((sw - 960) / 2),
         Math.floor((sh - 240) / 2)
       );
+      win.setAlwaysOnTop(true, 'screen-saver');
       win.once('ready-to-show', () => {
         console.log('[WINDOW_CONFIGS] Splash window ready-to-show, showing now');
         win.show();
@@ -196,6 +212,7 @@ const windowConfigs = {
     height: 580,
     frame: false,
     transparent: true,
+    hasShadow: false,
     alwaysOnTop: false,
     show: false,
     resizable: false,
@@ -205,6 +222,7 @@ const windowConfigs = {
       preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: true,
       backgroundThrottling: false,
     },
     onInit: (win) => {

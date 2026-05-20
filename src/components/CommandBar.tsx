@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, Camera, X, Paperclip, Plus, ChevronDown, Check } from 'lucide-react';
 import { useCommandBar } from '../hooks/useCommandBar';
 import { electronService } from '../services/electron';
@@ -18,7 +18,6 @@ const CommandBar: React.FC = () => {
     containerRef,
     MAX_CHARS,
     handleCapture,
-    handleSend,
     handleKeyDown,
     handlePaste,
     removeAttachment,
@@ -27,7 +26,6 @@ const CommandBar: React.FC = () => {
   } = useCommandBar();
 
   const [activeModel, setActiveModel] = useState<string>('gemini-2.5-flash');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Sync settings and setup listeners on mount
   useEffect(() => {
@@ -74,33 +72,19 @@ const CommandBar: React.FC = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64 = event.target?.result as string;
-        setAttachedImage(base64);
-      };
-      reader.readAsDataURL(file);
+  const handleFileOpen = async () => {
+    const base64 = await electronService.openFileDialog();
+    if (base64) {
+      setAttachedImage(base64);
+      // Return focus to the text input so the user can type immediately
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
-    // Clear value to allow selecting the same file again
-    e.target.value = '';
   };
 
   const activeModelData = MODELS.find(m => m.id === activeModel);
 
   return (
     <div className="app-container command-mode" ref={containerRef}>
-      {/* Hidden File Input for images ONLY */}
-      <input
-        type="file"
-        ref={fileInputRef}
-        accept="image/*"
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
-
       <div className="command-main">
         <div className="command-icon">
           <ChevronRight size={20} color="#dc2626" />
@@ -141,7 +125,7 @@ const CommandBar: React.FC = () => {
         <button 
           type="button" 
           className="footer-btn" 
-          onClick={() => fileInputRef.current?.click()}
+          onClick={handleFileOpen}
           style={{ padding: '6px 10px' }}
           title="Upload Imagem"
         >
@@ -195,7 +179,10 @@ const CommandBar: React.FC = () => {
         {isModelDropdownOpen && (
           <div 
             className="model-dropdown"
+            role="menu"
+            tabIndex={-1}
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
             style={{
               position: 'absolute',
               top: '100%',
@@ -249,18 +236,6 @@ const CommandBar: React.FC = () => {
                         bg = 'rgba(245, 158, 11, 0.15)';
                         border = '1px solid rgba(245, 158, 11, 0.3)';
                         color = '#f59e0b';
-                      } else if (m.tag === 'Live') {
-                        bg = 'rgba(6, 182, 212, 0.15)';
-                        border = '1px solid rgba(6, 182, 212, 0.3)';
-                        color = '#06b6d4';
-                      } else if (m.tag === 'Research') {
-                        bg = 'rgba(168, 85, 247, 0.15)';
-                        border = '1px solid rgba(168, 85, 247, 0.3)';
-                        color = '#a855f7';
-                      } else if (m.tag === 'Agent') {
-                        bg = 'rgba(16, 185, 129, 0.15)';
-                        border = '1px solid rgba(16, 185, 129, 0.3)';
-                        color = '#10b981';
                       }
                       
                       return (

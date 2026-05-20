@@ -35,8 +35,28 @@ const GeneralTab: React.FC<GeneralTabProps> = ({ settings, updateSettings }) => 
             className="settings-input"
             aria-label="API Key do Google"
             placeholder="Insira sua API Key do Google..."
-            value={settings.apiKey}
-            onChange={(e) => updateSettings({ apiKey: e.target.value })}
+            value={!showKey && settings.apiKey ? "••••••••••••••••••••••••••••••••••••••••" : (settings.apiKey || '')}
+            onChange={(e) => {
+              const val = e.target.value;
+              const MASK = "••••••••••••••••••••••••••••••••••••••••";
+              if (showKey || !settings.apiKey) {
+                updateSettings({ apiKey: val });
+                return;
+              }
+              if (val === MASK) return;
+              if (!val.includes("•")) {
+                updateSettings({ apiKey: val });
+                return;
+              }
+              const newChars = val.replaceAll('•', '');
+              if (newChars.length === 0) {
+                updateSettings({ apiKey: '' });
+              } else if (val.startsWith(MASK)) {
+                updateSettings({ apiKey: settings.apiKey + newChars });
+              } else {
+                updateSettings({ apiKey: newChars });
+              }
+            }}
             style={{ paddingRight: '40px' }}
           />
           <button 
@@ -70,8 +90,28 @@ const GeneralTab: React.FC<GeneralTabProps> = ({ settings, updateSettings }) => 
             className="settings-input"
             aria-label="API Key do Tavily"
             placeholder="Insira sua API Key do Tavily..."
-            value={settings.tavilyApiKey || ''}
-            onChange={(e) => updateSettings({ tavilyApiKey: e.target.value })}
+            value={!showTavilyKey && settings.tavilyApiKey ? "••••••••••••••••••••••••••••••••••••••••" : (settings.tavilyApiKey || '')}
+            onChange={(e) => {
+              const val = e.target.value;
+              const MASK = "••••••••••••••••••••••••••••••••••••••••";
+              if (showTavilyKey || !settings.tavilyApiKey) {
+                updateSettings({ tavilyApiKey: val });
+                return;
+              }
+              if (val === MASK) return;
+              if (!val.includes("•")) {
+                updateSettings({ tavilyApiKey: val });
+                return;
+              }
+              const newChars = val.replaceAll('•', '');
+              if (newChars.length === 0) {
+                updateSettings({ tavilyApiKey: '' });
+              } else if (val.startsWith(MASK)) {
+                updateSettings({ tavilyApiKey: settings.tavilyApiKey + newChars });
+              } else {
+                updateSettings({ tavilyApiKey: newChars });
+              }
+            }}
             style={{ paddingRight: '40px' }}
           />
           <button 

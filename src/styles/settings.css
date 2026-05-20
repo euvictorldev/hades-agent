@@ -393,6 +393,7 @@ input:checked + .slider:before {
 
 .search-input {
   width: 100%;
+  box-sizing: border-box;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;

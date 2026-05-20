@@ -86,17 +86,17 @@ export const useChatState = () => {
    * then clears all local state. This is the canonical way to start a new session.
    * Local state is always cleared even if archiving fails (e.g. API quota errors).
    */
-  const clearHistory = useCallback(async () => {
-    try {
-      await electronService.endSession('minichat');
-    } catch {
-      // Archiving failed (e.g. API quota), but we still start fresh
-    } finally {
-      setMessages([]);
-      messagesRef.current = [];
-      localStorage.removeItem('chat_history');
-      localStorage.removeItem('minichat_timer');
-    }
+  const clearHistory = useCallback(() => {
+    // Clear local state immediately for better UI experience
+    setMessages([]);
+    messagesRef.current = [];
+    localStorage.removeItem('chat_history');
+    localStorage.removeItem('minichat_timer');
+
+    // Archive in the background
+    electronService.endSession('minichat').catch((err) => {
+      console.error('[useChatState] Failed to end session:', err);
+    });
   }, []);
 
   return {

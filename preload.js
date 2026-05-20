@@ -150,9 +150,11 @@ contextBridge.exposeInMainWorld('electron', {
   sendSusurroSetupComplete: () => ipcRenderer.send('susurro-setup-complete'),
 
   // --- Utility Tools ---
+  openFileDialog: () => ipcRenderer.invoke('open-file-dialog'),
   searchWeb: (query) => ipcRenderer.invoke('search-web', query),
   getLolPlayerStats: (args) => ipcRenderer.invoke('get-lol-player-stats', args),
   openExternal: (url) => ipcRenderer.send('open-external', url),
+  copyToClipboard: (text) => ipcRenderer.send('copy-to-clipboard', text),
   getSystemAudioSourceId: () => ipcRenderer.invoke('get-system-audio-source-id'),
   transcribeAudio: (base64) => ipcRenderer.invoke('transcribe-audio', base64),
 

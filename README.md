@@ -13,7 +13,7 @@
       </p>
     </td>
     <td width="65%" valign="top" style="padding-left: 20px;">
-      <h1 style="margin-top: 0; margin-bottom: 8px;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
+      <h1 style="margin-top: 0; margin-bottom: 8px;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779302517/hades-tray-icon-128_dks55n.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
       <p><strong>Hades is an invisible, ultra-fast desktop companion with autonomous background memory consolidation and a local task scheduler.</strong></p>
       <p><strong>Safety Limits:</strong> Sandboxed with <strong>zero system-write access</strong> (cannot create, edit, or delete files, nor run scripts). The AI is strictly restricted to real-time Google queries (via Tavily) and local memory logs, keeping your PC 100% safe.</p>
     </td>
@@ -28,12 +28,30 @@
 </p>
 
 <table>
-<tr><td><b>Anti-Recording Shield</b></td><td>Native OS-level content protection. Hades magically becomes completely invisible on OBS Studio, Discord, Teams, Zoom screen-shares, and Windows screenshots to prevent private data leaks.</td></tr>
-<tr><td><b>Voice HUD (Susurro)</b></td><td>Press <code>Alt+B</code> to talk naturally. Direct 16kHz raw PCM streaming via ultra-low latency WebSockets directly to Google's Gemini Live API with sub-100ms response times.</td></tr>
-<tr><td><b>Spotlight Command Bar</b></td><td>Press <code>Alt+D</code> to summon a floating, transparent search bar. Get real-time internet-enabled answers instantly powered by the Tavily Search API.</td></tr>
-<tr><td><b>Session-Specific MiniChat</b></td><td>Dynamic chat HUD showing active model specs and token consumption in real-time. Wipe your session instantly to reset timers, history, and usage cost back to zero.</td></tr>
-<tr><td><b>Memory dreaming consolidation</b></td><td>Offline artificial sleep schedules background cycles to synthesize recent logs, automatically updating your highly compressed local <code>learnings.json</code> memory profile.</td></tr>
-<tr><td><b>Task & Reminder scheduler</b></td><td>Offline to-do ledger managed through secure IPC database handlers to schedule and monitor daily tasks fully local and offline.</td></tr>
+<tr>
+  <td><b>🛡️ Anti-Recording Shield</b></td>
+  <td>Native OS-level content protection via <code>setContentProtection</code>. Hades becomes <strong>completely invisible</strong> to OBS Studio, Discord, Teams, Zoom, and all Windows screen-capture APIs — your private data never leaks through shared screens.</td>
+</tr>
+<tr>
+  <td><b>🎙️ Voice HUD (Susurro)</b></td>
+  <td>Press <code>Alt+B</code> to talk naturally. Streams raw <strong>16 kHz PCM audio</strong> over a full-duplex WebSocket directly to the <strong>Gemini Live API</strong>, achieving sub-100ms voice-to-response latency with zero intermediate transcription step.</td>
+</tr>
+<tr>
+  <td><b>⚡ Spotlight Command Bar</b></td>
+  <td>Press <code>Alt+D</code> to summon a floating, borderless command bar. Delivers <strong>real-time internet-grounded answers</strong> powered by the Tavily Search API — attach images, switch AI models, and get answers without ever leaving your workflow.</td>
+</tr>
+<tr>
+  <td><b>💬 Session MiniChat</b></td>
+  <td>A persistent chat HUD that displays the <strong>active model, live token count, and session cost</strong>. Wipe the session instantly to reset all timers, history, and spend back to zero — no restart required.</td>
+</tr>
+<tr>
+  <td><b>🧠 Dream Memory Consolidation</b></td>
+  <td>Scheduled background AI cycles synthesize recent session logs into a <strong>compressed <code>learnings.json</code> memory profile</strong> — similar to how the brain consolidates long-term memory during sleep. Runs fully offline.</td>
+</tr>
+<tr>
+  <td><b>📋 Task & Reminder Scheduler</b></td>
+  <td>A <strong>fully local, offline task ledger</strong> managed through encrypted IPC database handlers. Schedule, monitor, and dismiss daily tasks without any cloud dependency or subscription.</td>
+</tr>
 </table>
 
 ---
@@ -41,46 +59,62 @@
 ## <img src="https://api.iconify.design/lucide:download.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Getting Started
 
 ### For Users (Download Installer)
+
 1. Head to the **[Releases](https://github.com/victorl-dev/Hades-Agent/releases)** page.
-2. Download the latest official Windows installer (`Hades-Setup-X.Y.Z.exe`).
-3. Launch the app, press **`Alt+S`** inside the app to save your API keys, and start chatting!
+2. Download the latest **`Hades-Setup-X.Y.Z.exe`** Windows installer.
+3. Run the installer, launch Hades, then press **`Alt+S`** to enter your API keys.
+
+> [!IMPORTANT]
+> Hades requires two free API keys to operate:
+> - **[Google Gemini API Key](https://aistudio.google.com/app/apikey)** — for all AI inference and voice streaming.
+> - **[Tavily Search API Key](https://app.tavily.com/)** — for real-time web search grounding.
 
 ### For Developers (Build from Source)
-Make sure you have **[Node.js](https://nodejs.org/)** (v18.x or newer) installed. Then run:
+
+**Prerequisites**
+
+| Requirement | Version | Notes |
+| :--- | :--- | :--- |
+| [Node.js](https://nodejs.org/) | v18.x or newer | LTS recommended |
+| npm | bundled with Node.js | — |
+| Windows | 10 / 11 | `setContentProtection` is Windows-only |
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/victorl-dev/Hades-Agent.git
 cd Hades-Agent
 
-# Install workspace dependencies
+# 2. Install all dependencies
 npm install
 
-# Start the concurrent hot-reload development process
+# 3. Launch the concurrent hot-reload dev environment
 npm run dev
 ```
+
+The dev server starts Vite (React renderer on `:3000`) and Electron concurrently with full hot-reload on both sides.
 
 ---
 
 ## <img src="https://api.iconify.design/lucide:keyboard.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Keyboard Shortcuts
 
-Hades floats quietly over your desktop and can be summoned instantly from anywhere:
+Hades lives silently in your system tray and can be summoned from any application, at any time:
 
 | Shortcut | Action |
 | :--- | :--- |
-| **`Alt+D`** | Summon Spotlight Command Bar |
-| **`Alt+B`** | Summon Susurro Voice HUD |
+| **`Alt+D`** | Summon / dismiss the Spotlight Command Bar |
+| **`Alt+B`** | Summon / dismiss the Susurro Voice HUD |
 | **`Alt+S`** | Open Settings & Shortcut Customization |
-| **`Esc`** | Instantly hide active window and restore focus |
+| **`Alt+V`** | Toggle voice input mode |
+| **`Esc`** | Hide the active window and restore prior focus |
 
 > [!TIP]
-> You can fully customize all hotkeys inside the **Shortcuts** tab in the Settings panel (`Alt+S`)!
+> Every shortcut is fully rebindable. Open the **Shortcuts** tab inside Settings (`Alt+S`) to assign your own key combinations.
 
 ---
 
 ## <img src="https://api.iconify.design/lucide:network.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> System Architecture
 
-Hades orchestrates transparent renderer overlay windows and backend security pipelines using high-speed IPC event protocols:
+Hades orchestrates multiple transparent overlay windows through a strict **IPC event bridge**, keeping the renderer completely sandboxed from the filesystem while the main process handles all privileged operations:
 
 ```mermaid
 graph TD
@@ -123,16 +157,18 @@ graph TD
 
 ## <img src="https://api.iconify.design/lucide:cpu.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> AI-Assisted Engineering
 
-Hades Agent was co-engineered with Google's **Antigravity** (Advanced Agentic Coding Assistant by Google DeepMind) using **Subagent-Driven Development (SDD)**:
-- **Modular Autonomy:** Specialized subagents built individual IPC event engines, cryptography wrappers, and voice pipelines under high-speed validation loops.
-- **Strict Quality Constraints:** Clean code architecture keeping custom React hook sizes minimal, utilizing a centralized State Store (`jsonStore.js`), and keeping production compilation times under **760ms**.
+Hades was co-engineered with **[Google Antigravity](https://deepmind.google/)** (Advanced Agentic Coding Assistant by Google DeepMind) using **Subagent-Driven Development (SDD)**:
+
+- **Modular Autonomy:** Specialized subagents independently built IPC event engines, AES-256 cryptography wrappers, voice PCM pipelines, and window lifecycle managers — each validated in isolation before integration.
+- **Strict Quality Gates:** Architecture enforces minimal custom React hook sizes, a single centralized state store (`jsonStore.js`), and production Vite compilation times consistently under **760 ms**.
+- **Continuous Hardening:** Security subagents enforced sandbox isolation, Content Security Policy headers, and `contextIsolation` at every IPC boundary, with no `nodeIntegration` exposure to the renderer.
 
 ---
 
 ## <img src="https://api.iconify.design/lucide:sparkles.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Inspiration & Credits
 
 > [!NOTE]
-> Hades Agent is inspired by **Persua**, a conceptual real-time voice and AI assistant created by software engineer **Lucas Montano** (@lucasmontano). Hades was engineered entirely from scratch to explore raw PCM streaming, full-duplex WebSockets, and content-protection algorithms in Electron. Thank you, Lucas, for inspiring the community!
+> Hades Agent is inspired by **Persua**, a conceptual real-time voice and AI assistant created by software engineer **Lucas Montano** ([@lucasmontano](https://github.com/lucasmontano)). Hades was engineered entirely from scratch to explore raw PCM streaming, full-duplex WebSockets, and OS-level content-protection algorithms in Electron. Thank you, Lucas, for pushing the community to build things that don't exist yet.
 
 ---
 
@@ -147,3 +183,4 @@ Hades Agent was co-engineered with Google's **Antigravity** (Advanced Agentic Co
 MIT — See [LICENSE](LICENSE).
 
 Built with dedication by [Victor L.](https://github.com/victorl-dev)
+

@@ -6,14 +6,11 @@ class AppState {
   isSusurroPinned = false;
   isSusurroTranscribing = false;
   isQuitting = false;
+  isFileDialogOpen = false;
 
   constructor() {
-    try {
-      const history = store.getChatHistory();
-      this.chatHasMessages = Array.isArray(history) && history.length > 0;
-    } catch (err) {
-      this.chatHasMessages = false;
-    }
+    const history = store.getChatHistory();
+    this.chatHasMessages = Array.isArray(history) && history.length > 0;
   }
 }
 

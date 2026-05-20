@@ -30,12 +30,12 @@ const Splash: React.FC = () => {
     opacity = 1;
     transform = 'scale(1) translateY(0px)';
   } else if (phase === 'leaving') {
-    opacity = 0;
     transform = 'scale(1.03) translateY(-12px)';
   }
 
   // Premium, continuous transition that is always active
-  const transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+  const opacityTransition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+  const transformTransition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
 
   // HADES-AGENT em fonte Figlet ANSI Shadow
   const asciiArt = `██╗  ██╗ █████╗ ██████╗ ███████╗███████╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗
@@ -57,13 +57,14 @@ const Splash: React.FC = () => {
         overflow: 'hidden',
         WebkitAppRegion: 'drag',
         userSelect: 'none',
+        opacity,
+        transition: opacityTransition,
       } as any}
     >
       <div
         style={{
-          opacity,
           transform,
-          transition,
+          transition: transformTransition,
           display: 'flex',
           alignItems: 'center',
           gap: '24px',

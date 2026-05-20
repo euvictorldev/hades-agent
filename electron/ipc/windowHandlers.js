@@ -47,7 +47,60 @@ function registerWindowHandlers() {
     return { success: false, error: "Window not found" };
   });
 
+  /**
+   * Opens a native file dialog for images and returns a base64 string.
+   * Temporarily lowers alwaysOnTop on all app windows so the OS dialog renders above them.
+   */
+  ipcMain.handle('open-file-dialog', async (event) => {
+    const { dialog } = require('electron');
+    const fs = require('node:fs');
+    
+    appState.isFileDialogOpen = true;
+    
+    // Snapshot which windows currently have alwaysOnTop, then lower them all
+    const allWins = BrowserWindow.getAllWindows();
+    const wasAlwaysOnTop = allWins.map(w => ({ win: w, flag: w.isAlwaysOnTop() }));
+    wasAlwaysOnTop.forEach(({ win, flag }) => { if (flag) win.setAlwaysOnTop(false); });
+    
+    const restoreAlwaysOnTop = () => {
+      wasAlwaysOnTop.forEach(({ win, flag }) => {
+        if (flag && !win.isDestroyed()) win.setAlwaysOnTop(true, 'pop-up-menu');
+      });
+    };
 
+    try {
+      const callerWin = BrowserWindow.fromWebContents(event.sender);
+      const result = await dialog.showOpenDialog(callerWin ?? undefined, {
+        properties: ['openFile'],
+        filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif', 'jpeg', 'webp'] }]
+      });
+      
+      restoreAlwaysOnTop();
+      
+      if (!result.canceled && result.filePaths.length > 0) {
+        const filePath = result.filePaths[0];
+        const buffer = fs.readFileSync(filePath);
+        let ext = filePath.split('.').pop().toLowerCase();
+        if (ext === 'jpg') ext = 'jpeg';
+        return `data:image/${ext};base64,${buffer.toString('base64')}`;
+      }
+    } catch (err) {
+      console.error('[WINDOW_HANDLERS] Error in open-file-dialog:', err);
+      restoreAlwaysOnTop();
+    } finally {
+      setTimeout(() => {
+        appState.isFileDialogOpen = false;
+        
+        // Restore focus to the window that initiated the dialog
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (win && !win.isDestroyed() && win.isVisible()) {
+          win.focus();
+        }
+      }, 150);
+    }
+    
+    return null;
+  });
 
   /**
    * Toggles the "always on top" state of the active window.
@@ -73,7 +126,14 @@ function registerWindowHandlers() {
    */
   ipcMain.handle('is-pinned', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender);
-    return win ? win.isAlwaysOnTop() : false;
+    if (!win) return false;
+    
+    // Return the user-facing pin state, not the internal alwaysOnTop (used for z-order)
+    const chatWin = windowManager.get('chat');
+    const susurroWin = windowManager.get('susurro');
+    if (win === chatWin) return appState.isChatPinned;
+    if (win === susurroWin) return appState.isSusurroPinned;
+    return win.isAlwaysOnTop();
   });
 
   /**
@@ -110,6 +170,8 @@ function registerWindowHandlers() {
    */
   ipcMain.on('show-chat', () => {
     const chatWin = windowManager.get('chat') || windowManager.createChatWindow();
+    chatWin.setAlwaysOnTop(true, 'pop-up-menu');
+    chatWin.moveTop();
     chatWin.show();
     chatWin.focus();
   });

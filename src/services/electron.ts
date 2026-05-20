@@ -116,8 +116,9 @@ class ElectronService {
   }
 
   // --- Tools (IPC wrappers) ---
+  async openFileDialog(): Promise<string | null> { return await this.electron?.openFileDialog() ?? null; }
   async searchWeb(query: string) { return await this.electron?.searchWeb(query); }
-  async getLolPlayerStats(args: any) { return await this.electron?.getLolPlayerStats(args); }
+
   
   // --- Skills System ---
   async saveSkill(args: any) { return await this.handleResponse(this.electron?.saveSkill(args), 'Erro ao salvar skill', 'saveSkill'); }
@@ -212,6 +213,7 @@ class ElectronService {
 
   // --- Misc ---
   openExternal(url: string) { this.electron?.openExternal(url); }
+  copyToClipboard(text: string) { this.electron?.copyToClipboard?.(text); }
 }
 
 export const electronService = new ElectronService();

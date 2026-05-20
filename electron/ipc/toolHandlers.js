@@ -1,4 +1,4 @@
-const { ipcMain, shell, desktopCapturer } = require('electron');
+const { ipcMain, shell, desktopCapturer, clipboard } = require('electron');
 const { exec } = require('node:child_process');
 const logger = require('../services/logger');
 const skillService = require('../services/skillService');
@@ -50,6 +50,10 @@ function registerToolHandlers() {
 
   ipcMain.on('open-external', (event, url) => {
     if (url) shell.openExternal(url);
+  });
+
+  ipcMain.on('copy-to-clipboard', (event, text) => {
+    clipboard.writeText(text || '');
   });
 
   /**

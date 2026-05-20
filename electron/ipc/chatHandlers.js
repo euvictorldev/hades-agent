@@ -11,7 +11,7 @@ function registerChatHandlers() {
   ipcMain.handle('get-chat-history', () => {
     return { success: true, data: store.getChatHistory() };
   });
-  
+
   ipcMain.on('save-chat-history', (event, history) => {
     store.saveChatHistory(history);
   });
@@ -20,39 +20,12 @@ function registerChatHandlers() {
     try {
       const isSusurro = type === 'susurro';
       const history = isSusurro ? store.getSusurroHistory() : store.getChatHistory();
-      
+
       if (!history || history.length === 0) {
         return { success: true, data: { message: 'No active session' } };
       }
 
-      let firstMessageContent = 'Nova Sessão';
-      const firstMessage = history[0];
-      if (firstMessage) {
-        if (firstMessage.parts) {
-          const textPart = firstMessage.parts.find(p => p.text);
-          if (textPart) firstMessageContent = textPart.text;
-        } else if (firstMessage.text) {
-          firstMessageContent = firstMessage.text;
-        } else if (firstMessage.content) {
-          firstMessageContent = firstMessage.content;
-        }
-      }
-
-      const aiService = require('../services/aiService');
-      const title = await aiService.generateSessionTitle(firstMessageContent);
-
-      const session = {
-        id: Date.now().toString(),
-        title,
-        type: type || 'minichat',
-        timestamp: new Date().toISOString(),
-        messages: history
-      };
-
-      const sessions = store.getSessions();
-      sessions.push(session);
-      store.saveSessions(sessions);
-
+      // UI clears immediately to avoid delay
       if (isSusurro) {
         store.saveSusurroHistory([]);
       } else {
@@ -71,6 +44,35 @@ function registerChatHandlers() {
         cmdWin.webContents.send('focus-input');
         cmdWin.focus(); // Ensure it receives OS-level focus if possible
       }
+
+      // Run AI session generation asynchronously without blocking the UI
+      let firstMessageContent = 'Nova Sessão';
+      const firstUserMessage = history.find(msg => msg.role === 'user');
+      if (firstUserMessage) {
+        if (firstUserMessage.parts) {
+          const textPart = firstUserMessage.parts.find(p => p.text);
+          if (textPart) firstMessageContent = textPart.text;
+        } else if (firstUserMessage.text) {
+          firstMessageContent = firstUserMessage.text;
+        } else if (firstUserMessage.content) {
+          firstMessageContent = firstUserMessage.content;
+        }
+      }
+
+      const aiService = require('../services/aiService');
+      const title = await aiService.generateSessionTitle(firstMessageContent);
+
+      const session = {
+        id: Date.now().toString(),
+        title,
+        type: type || 'minichat',
+        timestamp: new Date().toISOString(),
+        messages: history
+      };
+
+      const sessions = store.getSessions();
+      sessions.push(session);
+      store.saveSessions(sessions);
 
       return { success: true, data: session };
     } catch (error) {

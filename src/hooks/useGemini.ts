@@ -91,9 +91,6 @@ export const useGemini = (
           // Uses a separate Gemini request with native url_context (bypass Cloudflare, PDF support)
           return await fetchWithUrlContext(args.url, args.instruction);
 
-        case "get_lol_player_stats":
-          return await electronService.getLolPlayerStats(args);
-
         case "schedule_task":
           return await electronService.scheduleTask(args);
 
@@ -141,21 +138,41 @@ export const useGemini = (
    * Performs a single fetch request to the Gemini API.
    * Native tools enabled: google_search (replaces Tavily), code_execution (new).
    */
-  const fetchInference = async (url: string, contents: any[]) => {
+  const fetchInference = async (url: string, contents: any[], toolsToInject: any) => {
+    const payload = {
+      contents,
+      tools: [
+        toolsToInject              // custom function_declarations
+      ],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 4096 }
+    };
+
+    console.groupCollapsed("🤖 [Gemini API] Request Payload");
+    console.log("URL:", url);
+    console.log("System Prompt / Contents:", JSON.stringify(contents, null, 2));
+    console.log("Tools injected:", JSON.stringify(payload.tools, null, 2));
+    console.log("Full Payload size:", JSON.stringify(payload).length, "bytes");
+    console.groupEnd();
+
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents,
-        tools: [
-          GEMINI_TOOLS              // custom function_declarations
-        ],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 4096 }
-      })
+      body: JSON.stringify(payload)
     });
 
-    if (response.status === 429) return { error: "LIMIT" };
+    if (response.status === 429) {
+      console.warn("🤖 [Gemini API] 429 RATE LIMIT REACHED");
+      return { error: "LIMIT" };
+    }
     const data = await response.json();
+    
+    console.groupCollapsed("🤖 [Gemini API] Response Data");
+    console.log("Response JSON:", JSON.stringify(data, null, 2));
+    console.log("Total Tokens used:", data.usageMetadata?.totalTokenCount);
+    console.log("Prompt tokens:", data.usageMetadata?.promptTokenCount);
+    console.log("Candidates tokens:", data.usageMetadata?.candidatesTokenCount);
+    console.groupEnd();
+
     if (data.error && typeof data.error === 'object') {
       throw new Error(data.error.message || JSON.stringify(data.error));
     }
@@ -165,7 +182,7 @@ export const useGemini = (
   /**
    * Main ReAct loop: execute tools autonomously before responding.
    */
-  const runReactLoop = async (url: string, contents: any[]) => {
+  const runReactLoop = async (url: string, contents: any[], toolsToInject: any) => {
     let callCount = 0;
     let aiText = "";
     let hasFinalAnswer = false;
@@ -174,7 +191,7 @@ export const useGemini = (
     const toolCallsLog: any[] = [];
 
     while (callCount < 20 && !hasFinalAnswer) {
-      const data = await fetchInference(url, contents);
+      const data = await fetchInference(url, contents, toolsToInject);
       if (data.error === "LIMIT") {
         aiText = "⚠️ LIMITE DE REQUISIÇÕES ATINGIDO.";
         break;
@@ -244,7 +261,7 @@ export const useGemini = (
       // Fetch dynamic context
       const skillsResp = await electronService.listSkills();
       const activeSkills = skillsResp && Array.isArray(skillsResp) && skillsResp.length > 0 
-          ? skillsResp.map((s: any) => `- ${s.name}: ${s.description}`).join('\n') 
+          ? `[${skillsResp.map((s: any) => s.name).join(', ')}]` 
           : 'Nenhuma skill disponível.';
       
       const learnings = await electronService.getLearnings();
@@ -252,6 +269,36 @@ export const useGemini = (
       // Build rich context for system prompt (Phases 1, 2, 4, 5)
       const ctx = buildHadesContext(activeSkills, learnings);
       const systemPrompt = getHadesSystemPrompt(ctx);
+
+      console.groupCollapsed("🧠 [Hades Context] Generation");
+      console.log("Active Skills Length (chars):", activeSkills.length);
+      console.log("Learnings Length (chars):", learnings ? JSON.stringify(learnings).length : 0);
+      console.log("System Prompt Length (chars):", systemPrompt.length);
+      console.log("System Prompt Preview:", systemPrompt.substring(0, 500) + "...");
+      console.groupEnd();
+
+      // --- Lightweight Intent Router (Phase 4) ---
+      const msgLower = userMsgText.toLowerCase();
+      const needsWeb = /(pesquis|busc|not[íi]cia|google|site|web|link|url|resum|leia|youtube)/i.test(msgLower);
+      const needsSystem = /(tira|captur|tela|agend|lembr|taref|chat|notific|skill|mem[óo]ria)/i.test(msgLower);
+
+      let filteredTools = GEMINI_TOOLS.function_declarations.filter(t => t.name === 'complete_task' || t.name === 'send_message');
+
+      if (needsWeb) {
+        filteredTools.push(...GEMINI_TOOLS.function_declarations.filter(t => ['search_web', 'read_url'].includes(t.name)));
+      }
+      if (needsSystem) {
+        filteredTools.push(...GEMINI_TOOLS.function_declarations.filter(t => 
+          ['capture_screen', 'get_open_windows', 'schedule_task', 'list_tasks', 'delete_task', 'notify', 'show_chat'].includes(t.name)
+        ));
+      }
+      
+      if (!needsWeb && !needsSystem && msgLower.length > 60) {
+        filteredTools = GEMINI_TOOLS.function_declarations;
+      }
+
+      const toolsToInject = { function_declarations: filteredTools };
+      // ------------------------------------------
 
       const apiModel = mapModelIdToApiName(currentModel);
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent?key=${apiKey}`;
@@ -261,7 +308,7 @@ export const useGemini = (
         contents.push({ role: 'user', parts: [{ text: userMsgText }] });
       }
 
-      const { aiText, hasUsedSendMessage, totalTokens, toolCallsLog } = await runReactLoop(url, contents);
+      const { aiText, hasUsedSendMessage, totalTokens, toolCallsLog } = await runReactLoop(url, contents, toolsToInject);
 
       if (aiText && !hasUsedSendMessage) {
         addMessage(aiText, 'ia');

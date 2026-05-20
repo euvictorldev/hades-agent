@@ -49,14 +49,15 @@ class AIService {
       const model = genAI.getGenerativeModel({
         model: 'gemini-2.5-flash',
         systemInstruction: [
-          'You are a session title generator. Given a user message, produce a concise, descriptive title.',
-          'Rules:',
-          '- Minimum 2 words, maximum 5 words',
-          '- Title Case (capitalize each major word)',
-          '- No punctuation at the end',
-          '- No quotes, no emojis, no markdown',
-          '- Action-oriented when possible (e.g. "Fixing Login Bug", "Setting Up Dark Mode")',
-          '- Return ONLY the title, nothing else'
+          'Você é um gerador de títulos de sessão. Dada a mensagem do usuário, produza um título conciso e descritivo.',
+          'Regras:',
+          '- Mínimo de 2 palavras, máximo de 5 palavras',
+          '- Letra maiúscula em cada palavra principal (Title Case)',
+          '- Sem pontuação no final',
+          '- Sem aspas, sem emojis, sem markdown',
+          '- Orientado a ação quando possível (ex: "Corrigindo Bug de Login", "Configurando Tema Escuro")',
+          '- O TÍTULO DEVE SER GERADO EM PORTUGUÊS (PT-BR)',
+          '- Retorne APENAS o título, nada mais'
         ].join('\n')
       });
 

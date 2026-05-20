@@ -56,8 +56,9 @@ export interface ElectronAPI {
   saveSusurroMessage: (msg: any) => Promise<IPCResponse<void>>;
   
   // Tools & IPC
+  openFileDialog: () => Promise<string | null>;
   searchWeb: (query: string) => Promise<any>;
-  getLolPlayerStats: (args: any) => Promise<any>;
+
   
   // Skills System
   saveSkill: (args: { name: string, description: string, procedure: string }) => Promise<IPCResponse<any>>;
@@ -110,6 +111,7 @@ export interface ElectronAPI {
 
   // Misc
   openExternal: (url: string) => void;
+  copyToClipboard: (text: string) => void;
 }
 
 export interface AudioSettings {

@@ -10,25 +10,23 @@ const registerGlobalShortcuts = require('../shortcuts');
 function applyStealthMode(enabled) {
   const allWindows = BrowserWindow.getAllWindows();
   console.log(`[SETTINGS_STEALTH] Applying stealth mode (${enabled}) to ${allWindows.length} windows.`);
+  
   allWindows.forEach(win => {
     if (!win.isDestroyed()) {
       const url = win.webContents.getURL();
-      const match = url.match(/\?window=([^&]+)/);
+      const match = /\?window=([^&]+)/.exec(url);
       const name = match ? match[1] : win.getTitle() || 'unknown';
       
       try {
-        const r1 = win.setContentProtection(false);
-        let r2 = null;
-        if (enabled) {
-          r2 = win.setContentProtection(true);
-        }
-        console.log(`[SETTINGS_STEALTH] Window: ${name} (alwaysOnTop: ${win.isAlwaysOnTop()}, visible: ${win.isVisible()}) -> setFalse: ${r1}, setTrue: ${r2}`);
+        const result = win.setContentProtection(enabled);
+        console.log(`[SETTINGS_STEALTH] Window: ${name} (alwaysOnTop: ${win.isAlwaysOnTop()}, visible: ${win.isVisible()}) -> setContentProtection(${enabled}): ${result}`);
       } catch (err) {
         console.error(`[SETTINGS_STEALTH] Failed to set content protection on ${name}:`, err);
       }
     }
   });
-  logger.info('SETTINGS', `Stealth mode ${enabled ? 'enabled' : 'disabled'} on ${allWindows.length} window(s).`);
+
+  logger.info('SETTINGS', `Stealth mode ${enabled ? 'enabled' : 'disabled'}. Applied to all background windows immediately.`);
 }
 
 /**
@@ -54,8 +52,22 @@ function registerSettingsHandlers() {
   // Persists all settings and applies side-effects immediately
   ipcMain.handle('save-settings', (event, settings) => {
     try {
+      const oldSettings = jsonStore.getSettings();
+      const oldStealth = !!oldSettings?.general?.stealthMode;
+      const newStealth = !!settings?.general?.stealthMode;
+      const stealthModeChanged = oldStealth !== newStealth;
+
       jsonStore.saveSettings(settings);
-      applyStealthMode(settings.general.stealthMode);
+      
+      if (stealthModeChanged) {
+        logger.info('SETTINGS', 'Stealth mode changed. Restarting application to apply DWM composition securely.');
+        const { app } = require('electron');
+        app.relaunch();
+        app.exit();
+        return { success: true };
+      }
+
+      applyStealthMode(newStealth);
       applyApiKey(settings.general.apiKey);
       
       // Update global shortcuts dynamically on save

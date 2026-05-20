@@ -1,5 +1,6 @@
 const { BrowserWindow, shell, app, Menu } = require('electron');
 const configs = require('./windowConfigs');
+const log = require('electron-log');
 
 /**
  * WindowManager handles the lifecycle and management of all application windows.
@@ -24,7 +25,7 @@ class WindowManager {
    * Hides all visible windows.
    */
   hideAllWindows() {
-    console.log('[WINDOW_MANAGER] Hiding all windows');
+    log.info('[WINDOW_MANAGER] Hiding all windows');
     Object.values(this.windows).forEach(win => {
       if (win && !win.isDestroyed() && win.isVisible()) {
         win.hide();
@@ -37,7 +38,7 @@ class WindowManager {
    * @param {string[]} excludeNames - Windows that should remain untouched.
    */
   hideAllExcept(excludeNames = []) {
-    console.log(`[WINDOW_MANAGER] Hiding all windows except: ${excludeNames.join(', ')}`);
+    log.info(`[WINDOW_MANAGER] Hiding all windows except: ${excludeNames.join(', ')}`);
     Object.entries(this.windows).forEach(([name, win]) => {
       if (win && !win.isDestroyed() && win.isVisible() && !excludeNames.includes(name)) {
         win.hide();
@@ -51,13 +52,13 @@ class WindowManager {
    * @returns {BrowserWindow}
    */
   createWindow(name) {
-    console.log(`[WINDOW_MANAGER] createWindow called for: ${name}`);
+    log.info(`[WINDOW_MANAGER] createWindow called for: ${name}`);
     if (this.windows[name] && !this.windows[name].isDestroyed()) {
-      console.log(`[WINDOW_MANAGER] Reusing existing window for: ${name}`);
+      log.info(`[WINDOW_MANAGER] Reusing existing window for: ${name}`);
       return this.windows[name];
     }
 
-    console.log(`[WINDOW_MANAGER] Creating new window for: ${name}`);
+    log.info(`[WINDOW_MANAGER] Creating new window for: ${name}`);
     const config = configs[name];
     if (!config) throw new Error(`Window configuration for "${name}" not found.`);
 
@@ -65,12 +66,12 @@ class WindowManager {
     this.windows[name] = win;
 
     // Load URL or File
-    console.log(`[WINDOW_MANAGER] Loading URL for ${name}:`, config.url);
+    log.info(`[WINDOW_MANAGER] Loading URL for ${name}:`, config.url);
     win.loadURL(config.url);
 
     // Run custom initialization
     if (config.onInit) {
-      console.log(`[WINDOW_MANAGER] Running onInit for: ${name}`);
+      log.info(`[WINDOW_MANAGER] Running onInit for: ${name}`);
       config.onInit(win);
     }
 
@@ -80,12 +81,12 @@ class WindowManager {
     // Setup DevTools and Shortcuts
     win.webContents.on('before-input-event', (event, input) => {
       if (input.control && input.shift && input.key.toLowerCase() === 'i') {
-        console.log(`[WINDOW_MANAGER] Ctrl+Shift+I detected on window: ${name}`);
+        log.info(`[WINDOW_MANAGER] Ctrl+Shift+I detected on window: ${name}`);
         if (win.webContents.isDevToolsOpened()) {
-          console.log(`[WINDOW_MANAGER] Closing DevTools for: ${name}`);
+          log.info(`[WINDOW_MANAGER] Closing DevTools for: ${name}`);
           win.webContents.closeDevTools();
         } else {
-          console.log(`[WINDOW_MANAGER] Opening DevTools for: ${name}`);
+          log.info(`[WINDOW_MANAGER] Opening DevTools for: ${name}`);
           win.webContents.openDevTools({ mode: 'detach' });
         }
         event.preventDefault();
@@ -94,32 +95,33 @@ class WindowManager {
 
     // Add specific event logs for debugging
     win.webContents.on('did-finish-load', () => {
-      console.log(`[WINDOW_MANAGER] Window loaded: ${name}`);
+      log.info(`[WINDOW_MANAGER] Window loaded: ${name}`);
     });
 
     win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
-      console.error(`[WINDOW_MANAGER] Window failed to load: ${name}. Error: ${errorCode} - ${errorDescription}`);
+      log.error(`[WINDOW_MANAGER] Window failed to load: ${name}. Error: ${errorCode} - ${errorDescription}`);
     });
 
     win.webContents.on('devtools-opened', () => {
-      console.log(`[WINDOW_MANAGER] DevTools opened for: ${name}`);
+      log.info(`[WINDOW_MANAGER] DevTools opened for: ${name}`);
     });
 
     win.webContents.on('devtools-closed', () => {
-      console.log(`[WINDOW_MANAGER] DevTools closed for: ${name}`);
+      log.info(`[WINDOW_MANAGER] DevTools closed for: ${name}`);
     });
 
     // Cleanup on close
     win.on('closed', () => {
-      console.log(`[WINDOW_MANAGER] Window closed: ${name}`);
+      log.info(`[WINDOW_MANAGER] Window closed: ${name}`);
       this.windows[name] = null;
     });
 
-    // Apply stealth mode to newly created windows
+    // Apply stealth mode to newly created windows BEFORE they are shown.
+    // On Windows, setting this AFTER the window is shown on a transparent window fails to apply to the DWM surface.
     try {
       const store = require('../store/jsonStore');
       const settings = store.getSettings();
-      const isStealth = !!(settings && settings.general && settings.general.stealthMode);
+      const isStealth = !!settings?.general?.stealthMode;
       console.log(`[WINDOW_MANAGER] Initializing stealth mode for ${name}. isStealth: ${isStealth}, alwaysOnTop: ${win.isAlwaysOnTop()}`);
       
       const success = win.setContentProtection(isStealth);
@@ -136,10 +138,10 @@ class WindowManager {
           try {
             const store = require('../store/jsonStore');
             const settings = store.getSettings();
-            const isStealth = !!(settings && settings.general && settings.general.stealthMode);
+            const isStealth = !!settings?.general?.stealthMode;
             
             const success = win.setContentProtection(isStealth);
-            console.log(`[WINDOW_MANAGER] [Enforce:${eventSource}:${delay}ms] for ${name} (alwaysOnTop: ${win.isAlwaysOnTop()}, visible: ${win.isVisible()}) -> setContentProtection: ${success}`);
+            console.log(`[WINDOW_MANAGER] [Enforce:${eventSource}:${delay}ms] for ${name} (alwaysOnTop: ${win.isAlwaysOnTop()}, visible: ${win.isVisible()}) -> setContentProtection(${isStealth}): ${success}`);
           } catch (e) {
             console.error(`[WINDOW_MANAGER] [Enforce:${eventSource}:${delay}ms] Failed for ${name}:`, e);
           }
@@ -166,30 +168,42 @@ class WindowManager {
     const win = this.createWindow('command');
     
     win.on('blur', () => {
-      console.log('[WINDOW_MANAGER] Command window blurred, checking in 150ms');
+      log.info('[WINDOW_MANAGER] >>> Command BLUR fired');
       setTimeout(() => {
         if (win.isDestroyed()) return;
         if (win.isFocused()) {
-          console.log('[WINDOW_MANAGER] Command window regained focus, keeping visible');
+          log.info('[WINDOW_MANAGER] Command regained focus within 150ms, keeping visible');
           return;
         }
         
         // Se o DevTools estiver aberto, não esconde a janela no blur para permitir a depuração
         if (win.webContents.isDevToolsOpened()) {
-          console.log('[WINDOW_MANAGER] DevTools estão abertos, mantendo a janela visível.');
+          log.info('[WINDOW_MANAGER] DevTools estão abertos, mantendo a janela visível.');
           return;
         }
         
         const appState = require('../appState');
+        
+        // If a native file dialog is open, the blur is expected — do NOT hide.
+        if (appState.isFileDialogOpen) {
+          log.info('[WINDOW_MANAGER] >>> Command BLUR → file dialog open, keeping visible');
+          return;
+        }
+        
         const focusedWin = BrowserWindow.getFocusedWindow();
         const chatWin = this.get('chat');
         const isChatFocused = focusedWin && focusedWin === chatWin;
         
+        log.info(`[WINDOW_MANAGER] Command BLUR check: isChatFocused=${isChatFocused} focusedWin=${focusedWin ? 'APP_WINDOW' : 'NONE/EXTERNAL'} cmdVisible=${win.isVisible()}`);
+        
         if (!isChatFocused && focusedWin !== win) {
+          log.info('[WINDOW_MANAGER] >>> Command BLUR → HIDING command + chat');
           win.hide();
           if (chatWin && !chatWin.isDestroyed() && !appState.isChatPinned) {
             chatWin.hide();
           }
+        } else {
+          log.info('[WINDOW_MANAGER] >>> Command BLUR → keeping visible (chat or command focused)');
         }
       }, 150);
     });
@@ -207,32 +221,49 @@ class WindowManager {
     const win = this.createWindow('chat');
     
     win.on('blur', () => {
-      console.log('[WINDOW_MANAGER] Chat window blurred, checking in 150ms');
+      log.info('[WINDOW_MANAGER] >>> Chat BLUR fired');
       setTimeout(() => {
         if (win.isDestroyed()) return;
         if (win.isFocused()) {
-          console.log('[WINDOW_MANAGER] Chat window regained focus, keeping visible');
+          log.info('[WINDOW_MANAGER] Chat regained focus within 150ms, keeping visible');
           return;
         }
         
         const appState = require('../appState');
+        
+        // If a native file dialog is open, the blur is expected — do NOT hide.
+        if (appState.isFileDialogOpen) {
+          log.info('[WINDOW_MANAGER] >>> Chat BLUR → file dialog open, keeping visible');
+          return;
+        }
+        
         const focusedWin = BrowserWindow.getFocusedWindow();
         const cmdWin = this.get('command');
         const isCommandFocused = focusedWin && focusedWin === cmdWin;
         
+        log.info(`[WINDOW_MANAGER] Chat BLUR check: isCommandFocused=${isCommandFocused} isChatPinned=${appState.isChatPinned} focusedWin=${focusedWin ? 'APP_WINDOW' : 'NONE/EXTERNAL'} chatVisible=${win.isVisible()}`);
+        
         if (!appState.isChatPinned && !isCommandFocused && focusedWin !== win) {
+          log.info('[WINDOW_MANAGER] >>> Chat BLUR → HIDING chat + command');
           win.hide();
           if (cmdWin && !cmdWin.isDestroyed()) {
             cmdWin.hide();
           }
+        } else {
+          log.info('[WINDOW_MANAGER] >>> Chat BLUR → keeping visible (pinned or command focused)');
         }
       }, 150);
     });
 
     if (showActive) {
+      win.setAlwaysOnTop(true, 'pop-up-menu');
+      win.moveTop();
       win.show();
       win.focus();
     } else {
+      // Due to Windows DWM bugs with Stealth Mode (setContentProtection) on transparent windows,
+      // we CANNOT leave the window hidden after creation. We MUST show it immediately.
+      // We use showInactive() to render the transparent surface without stealing focus.
       win.showInactive();
     }
     return win;
@@ -249,9 +280,9 @@ class WindowManager {
     });
 
     win.on('blur', () => {
-      console.log('[WINDOW_MANAGER] Voice window blurred');
+      log.info('[WINDOW_MANAGER] Voice window blurred');
       if (win.webContents.isDevToolsOpened()) {
-        console.log('[WINDOW_MANAGER] DevTools are open, keeping voice window visible.');
+        log.info('[WINDOW_MANAGER] DevTools are open, keeping voice window visible.');
         return;
       }
       win.hide();
@@ -269,16 +300,16 @@ class WindowManager {
     const win = this.createWindow('susurro');
     
     win.on('blur', () => {
-      console.log('[WINDOW_MANAGER] Susurro window blurred, checking in 150ms');
+      log.info('[WINDOW_MANAGER] Susurro window blurred, checking in 150ms');
       setTimeout(() => {
         if (win.isDestroyed()) return;
         if (win.isFocused()) {
-          console.log('[WINDOW_MANAGER] Susurro window regained focus, keeping visible');
+          log.info('[WINDOW_MANAGER] Susurro window regained focus, keeping visible');
           return;
         }
         
         if (win.webContents.isDevToolsOpened()) {
-          console.log('[WINDOW_MANAGER] DevTools are open, keeping Susurro window visible.');
+          log.info('[WINDOW_MANAGER] DevTools are open, keeping Susurro window visible.');
           return;
         }
         const appState = require('../appState');
@@ -289,12 +320,12 @@ class WindowManager {
     });
 
     win.on('minimize', () => {
-      console.log('[WINDOW_MANAGER] Susurro window minimized, stopping session');
+      log.info('[WINDOW_MANAGER] Susurro window minimized, stopping session');
       win.webContents.send('stop-susurro');
     });
 
     win.on('hide', () => {
-      console.log('[WINDOW_MANAGER] Susurro window hidden, stopping session');
+      log.info('[WINDOW_MANAGER] Susurro window hidden, stopping session');
       win.webContents.send('stop-susurro');
     });
 

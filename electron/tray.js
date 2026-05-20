@@ -11,7 +11,7 @@ let trayInstance = null;
  * @returns {Tray}
  */
 function createTray() {
-  const iconPath = path.join(__dirname, '../public/icon/icon-tray-round.png');
+  const iconPath = path.join(__dirname, '../public/icon/hades-tray-icon.ico');
   trayInstance = new Tray(iconPath);
 
   const contextMenu = Menu.buildFromTemplate([
@@ -45,7 +45,7 @@ function createTray() {
     }
   ]);
 
-  trayInstance.setToolTip('Hades Assistant');
+  trayInstance.setToolTip('Hades Agent');
   trayInstance.setContextMenu(contextMenu);
 
   return trayInstance;

@@ -17,10 +17,9 @@ const SessionDetail: React.FC<{ session: Session; onBack: () => void }> = ({ ses
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleCopy = useCallback((text: string, id: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 1500);
-    });
+    electronService.copyToClipboard(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 1500);
   }, []);
 
   const formatDate = (ts: string) => {
