@@ -6,7 +6,6 @@ import Susurro from './components/Susurro'
 import SuggestionsPopup from './components/SuggestionsPopup'
 import Splash from './components/Splash'
 import Settings from './components/Settings'
-import SusurroSetup from './components/SusurroSetup'
 
 const App: React.FC = () => {
   const urlParams = new URLSearchParams(globalThis.location.search)
@@ -35,10 +34,6 @@ const App: React.FC = () => {
 
   if (windowType === 'susurro') {
     return <Susurro />
-  }
-
-  if (windowType === 'susurro-setup') {
-    return <SusurroSetup />
   }
 
   if (windowType === 'suggestions') {
