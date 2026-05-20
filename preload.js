@@ -125,28 +125,6 @@ contextBridge.exposeInMainWorld('electron', {
   // --- Translation Service ---
   translateText: (text, target) => ipcRenderer.invoke('susurro-translate', text, target),
   translateIncremental: (text, previousText, target) => ipcRenderer.invoke('susurro-translate-incremental', text, previousText, target),
-  checkTranslationModel: () => ipcRenderer.invoke('check-translation-model'),
-  downloadTranslationModel: () => ipcRenderer.send('download-translation-model'),
-  onTranslationDownloadProgress: (callback) => {
-    const sub = (_event, prog) => callback(prog);
-    ipcRenderer.on('translation-download-progress', sub);
-    return () => ipcRenderer.removeListener('translation-download-progress', sub);
-  },
-  onTranslationDownloadStatus: (callback) => {
-    const sub = (_event, stat) => callback(stat);
-    ipcRenderer.on('translation-download-status', sub);
-    return () => ipcRenderer.removeListener('translation-download-status', sub);
-  },
-  onTranslationDownloadComplete: (callback) => {
-    const sub = (_event) => callback();
-    ipcRenderer.on('translation-download-complete', sub);
-    return () => ipcRenderer.removeListener('translation-download-complete', sub);
-  },
-  onTranslationDownloadError: (callback) => {
-    const sub = (_event, err) => callback(err);
-    ipcRenderer.on('translation-download-error', sub);
-    return () => ipcRenderer.removeListener('translation-download-error', sub);
-  },
   sendSusurroSetupComplete: () => ipcRenderer.send('susurro-setup-complete'),
 
   // --- Utility Tools ---

@@ -69,12 +69,6 @@ function registerSusurroHandlers() {
     }
   });
   
-  // --- Setup & Lifecycle ---
-  ipcMain.on('susurro-setup-complete', () => {
-    const setupWin = windowManager.get('susurroSetup');
-    if (setupWin) setupWin.close();
-  });
-
   // --- Real-time Transcription (Gemini Live) ---
   ipcMain.on('toggle-mic', (event, enabled) => {
     logger.info('IPC', `Microphone toggled: ${enabled}`);

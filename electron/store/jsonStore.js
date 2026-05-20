@@ -17,7 +17,6 @@ class JsonStore {
       tasks: path.join(this.userDataPath, 'tasks.json'),
       history: path.join(this.userDataPath, 'chat_history.json'),
       tokens: path.join(this.userDataPath, 'tokens.json'),
-      translation: path.join(this.userDataPath, 'translation_cache.json'),
       susurro: path.join(this.userDataPath, 'susurro_history.json'),
       personas: path.join(this.userDataPath, 'personas.json'),
       settings: path.join(this.userDataPath, 'settings.json'),
@@ -60,7 +59,6 @@ class JsonStore {
       susurroHistory: [],
       sessions: [],
       totalTokens: 0,
-      translationCache: {},
       settings: defaultSettings
     };
 
@@ -162,7 +160,6 @@ class JsonStore {
     this.cache.susurroHistory = this.safeLoad(this.paths.susurro, []);
     this.cache.sessions = this.safeLoad(this.paths.sessions, []);
     this.cache.totalTokens = this.safeLoad(this.paths.tokens, { total: 0 }).total || 0;
-    this.cache.translationCache = this.safeLoad(this.paths.translation, {});
     // Deep merge so new keys from defaultSettings survive missing fields in saved file
     const saved = this.safeLoadSettings();
     this.cache.settings = {
@@ -239,20 +236,6 @@ class JsonStore {
   saveTokens(total) {
     this.cache.totalTokens = total;
     this.safeSave(this.paths.tokens, { total });
-  }
-
-  getTranslationCache() { return this.cache.translationCache; }
-  saveTranslationCache(cache) {
-    this.cache.translationCache = cache;
-    
-    // Prune cache if it grows too large (keep last 5000 items)
-    const keys = Object.keys(cache);
-    if (keys.length > 5000) {
-      const toRemove = keys.slice(0, -5000);
-      toRemove.forEach(k => delete cache[k]);
-    }
-    
-    this.safeSave(this.paths.translation, cache);
   }
 
   getSettings() { return this.cache.settings; }

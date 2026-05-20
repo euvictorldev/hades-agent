@@ -189,21 +189,6 @@ class ElectronService {
     return this.electron?.onVoiceSend(callback) || (() => {});
   }
 
-  // --- Translation & Setup ---
-  sendSusurroSetupComplete() { this.electron?.sendSusurroSetupComplete(); }
-  downloadTranslationModel() { this.electron?.downloadTranslationModel(); }
-  onTranslationDownloadProgress(callback: (progress: number) => void) {
-    return this.electron?.onTranslationDownloadProgress(callback) || (() => {});
-  }
-  onTranslationDownloadStatus(callback: (status: string) => void) {
-    return this.electron?.onTranslationDownloadStatus(callback) || (() => {});
-  }
-  onTranslationDownloadComplete(callback: () => void) {
-    return this.electron?.onTranslationDownloadComplete(callback) || (() => {});
-  }
-  onTranslationDownloadError(callback: (error: string) => void) {
-    return this.electron?.onTranslationDownloadError(callback) || (() => {});
-  }
 
   // --- Suggestions ---
   toggleSuggestions(enabled: boolean) { this.electron?.toggleSuggestions(enabled); }
