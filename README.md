@@ -14,8 +14,9 @@
     </td>
     <td width="65%" valign="top" style="padding-left: 20px;">
       <h1 style="margin-top: 0;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
-      <p><strong>Hades Agent is an invisible, ultra-fast desktop AI companion built with Electron and Gemini Live API.</strong></p>
-      <p>Instead of being trapped in a browser, Hades floats freely over your open windows, listens and talks to you in real-time, and searches the web in seconds. Engineered with a native Stealth Mode, it automatically hides from OBS, Discord, and screen recordings to keep your keys and conversations 100% safe.</p>
+      <p><strong>Hades Agent is an invisible, ultra-fast desktop AI companion built with Electron, React, and Gemini Live API.</strong></p>
+      <p>Hades floats over your open windows, listens and talks in real-time, and consolidates offline memory autonomously through background dreaming cycles. It includes a built-in task scheduler to organize your daily workflow.</p>
+      <p>🛡️ <strong>Safety Limits:</strong> The agent operates under a strict offline security sandbox with <strong>zero system-write access</strong>. It cannot create, delete, or modify any files on your PC, nor run system scripts. The AI is limited strictly to real-time web searches (via Tavily Search API) and local memory updates, ensuring absolute system safety.</p>
     </td>
   </tr>
 </table>
