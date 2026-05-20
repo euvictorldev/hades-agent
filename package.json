@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "build:app": "vite build",
-    "package": "electron-builder --win"
+    "package": "electron-builder --win",
+    "dist": "vite build && electron-builder --win"
   },
   "build": {
     "appId": "com.victorl.hades",
@@ -30,11 +31,15 @@
       "package.json"
     ],
     "win": {
-      "target": "nsis"
+      "target": ["nsis", "portable"]
+    },
+    "portable": {
+      "artifactName": "Hades-Agent-${version}-portable.exe"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Hades-Agent-Setup-${version}.exe"
     }
   },
   "keywords": [],

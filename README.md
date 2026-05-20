@@ -61,8 +61,11 @@
 ### For Users (Download Installer)
 
 1. Head to the **[Releases](https://github.com/victorl-dev/Hades-Agent/releases)** page.
-2. Download the latest **`Hades-Setup-X.Y.Z.exe`** Windows installer.
+2. Download **`Hades-Agent-Setup-1.0.0.exe`** (or the `.zip` portable version).
 3. Run the installer, launch Hades, then press **`Alt+S`** to enter your API keys.
+
+> [!WARNING]
+> **Platform:** Hades has been tested exclusively on **Windows 10**. Windows 11 may work but is untested. macOS and Linux are **not supported** — the Anti-Recording Shield (`setContentProtection`) and global hotkey registration rely on Windows-specific Electron APIs.
 
 > [!IMPORTANT]
 > Hades requires two free API keys to operate:
