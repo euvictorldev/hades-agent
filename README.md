@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://res.cloudinary.com/dmii83n8i/image/upload/f_auto,q_auto/cld-sample-4.jpg" alt="Hades Banner" width="100%" style="border-radius: 16px; max-width: 800px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);" />
+  <img src="https://res.cloudinary.com/dmii83n8i/image/upload/fl_preserve_transparency/v1779237561/hades-agent_cx7vq7.jpg?_s=public-apps" alt="Hades Banner" width="100%" style="border-radius: 16px; max-width: 800px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);" />
 </p>
 
 # Hades Agent <img src="https://res.cloudinary.com/YOUR_CLOUDINARY_USER/image/upload/v123456/hades-tray-icon.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" />
