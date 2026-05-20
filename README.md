@@ -15,10 +15,10 @@
       </p>
     </td>
     <td width="65%" valign="top">
-      <h1>Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
-      <p><strong>The floating, super-smart, and invisible desktop AI assistant that learns from you!</strong></p>
+      <h1>Hades Agent <img src="https://res.cloudinary.com/YOUR_CLOUDINARY_USER/image/upload/v123456/hades-tray-icon.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
+      <p><strong>An invisible desktop AI assistant that floats over your windows, talks in real-time, searches the web, and automatically hides from OBS, screen-shares, and screen captures. Built with Gemini Live API and Electron.</strong></p>
       <p>Hades Agent is an ultra-lightweight AI companion that lives on your computer in an entirely new way. Instead of being stuck inside a browser tab, it floats freely over your open windows, listens and talks to you in real-time, searches the web in seconds, and automatically hides from screen recordings to keep your data 100% safe!</p>
-      <p>Built with <strong>Electron</strong>, <strong>React</strong>, <strong>Vite</strong>, and powered by Google's cutting-edge <strong>Gemini Multimodal Live API</strong>, Hades is engineered to be extremely fast, secure, and smart.</p>
+      <p>Built with <strong>Electron</strong>, <strong>React</strong>, <strong>Vite</strong>, and powered by Google's cutting-edge <strong>Gemini Multimodal Live API</strong>, Hades is engineered to be extremely fast, responsive, and smart.</p>
     </td>
   </tr>
 </table>
@@ -28,34 +28,34 @@
 ## <img src="https://api.iconify.design/lucide:zap.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> What is Hades? (In Simple Words!)
 
 Imagine having a personal assistant who is like a superhero on your computer:
-1. **It Listens and Speaks:** It doesn't just read text; it understands your voice through your microphone or system audio instantly.
-2. **It Has Memory:** When you aren't actively using your computer, it enters an "AI Sleep" (Dreaming) state where it analyzes the day's conversations to remember your preferences and tastes for the future.
-3. **It is Invisible:** If you are sharing your screen on Discord, Microsoft Teams, recording a video with OBS Studio, or taking screenshots, Hades magically disappears from the video stream! No one will ever see your notes or secret keys.
-4. **Super Vault:** All your secret API keys and configurations are saved using bank-grade encryption directly on your machine. No dangerous `.env` files that can leak on the internet!
+1. **It is Invisible:** If you are sharing your screen on Discord, Microsoft Teams, recording a video with OBS Studio, or taking screenshots, Hades magically disappears from the video stream! No one will ever see your notes or secret keys.
+2. **It Listens and Speaks:** It doesn't just read text; it understands your voice through your microphone or system audio instantly.
+3. **Super Spotlight:** A floating Spotlight-style search bar that searches the web in real-time, giving you answers in seconds.
+4. **Ephemeral Session Control:** Clear your history completely to wipe session tokens, reset chat timers, and start with a fresh clean state.
 
 ---
 
 ## <img src="https://api.iconify.design/lucide:rocket.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Core Features & Technology Stack
 
-### <img src="https://api.iconify.design/lucide:mic.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Real-Time Voice Chat (Susurro Voice HUD)
-*   **For Users:** Press `Alt+B` and speak naturally! Hades hears your voice and speaks back to you in real-time. You can see a live timer, session cost trackers, and dynamic audio wave visualizers.
-*   **Technical Details:** Captures **16kHz raw PCM audio** directly from your microphone or system audio stream, transmitting it via ultra-low latency **WebSockets** to Google's `gemini-2.5-flash-native-audio-latest` model.
-
-### <img src="https://api.iconify.design/lucide:brain.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Memory Consolidation (Dreaming System)
-*   **For Users:** Hades has an "artificial sleep." It reads recent chat history files to form memories of who you are. You can choose which model manages this sleep and enable or disable this function in the settings panel.
-*   **Technical Details:** The `DreamService` schedules background analysis cycles, synthesizing and storing consolidated user insights in a highly compressed format in a local `learnings.json` file.
-
 ### <img src="https://api.iconify.design/lucide:eye-off.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Anti-Recording Shield (Stealth Shield)
 *   **For Users:** Enable "Stealth Mode" in your settings. Hades instantly becomes completely invisible to screen shares (Discord, Zoom, Teams), video recordings (OBS Studio, Camtasia), and OS-level screenshots!
 *   **Technical Details:** Applies the OS-level `setContentProtection(true)` API on all Electron windows, blocking screen capture at the Windows Desktop Window Manager (DWM) composition level.
+
+### <img src="https://api.iconify.design/lucide:mic.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Real-Time Voice Chat (Susurro Voice HUD)
+*   **For Users:** Press `Alt+B` and speak naturally! Hades hears your voice and speaks back to you in real-time. You can see a live timer, session cost trackers, and dynamic audio wave visualizers.
+*   **Technical Details:** Captures **16kHz raw PCM audio** directly from your microphone or system audio stream, transmitting it via ultra-low latency **WebSockets** to Google's `gemini-2.5-flash-native-audio-latest` model.
 
 ### <img src="https://api.iconify.design/lucide:search.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Quick-Search Bar (Spotlight Command Bar)
 *   **For Users:** Press `Alt+D` to open a search bar in the style of macOS Spotlight. Type any question, and Hades will search the internet in real-time to render highly detailed markdown answers.
 *   **Technical Details:** Sends asynchronous queries to the **Tavily Search API**, processing and rendering live search results dynamically inside transparent, reactive overlay windows.
 
-### <img src="https://api.iconify.design/lucide:lock.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Bank-Grade Encrypted Storage (Zero .env Leaks!)
-*   **For Users:** No complex configuration files to edit. Just open the Settings panel (`Alt+S`), paste your Google Gemini and Tavily API keys, and click **Save**. Hades secures them with strong encryption instantly.
-*   **Technical Details:** Uses a secure symmetric encryption wrapper powered by **AES-256-CBC** with keys derived using **scrypt** based on your OS username. Secret keys are never stored in plain text.
+### <img src="https://api.iconify.design/lucide:message-square.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Session-Specific MiniChat & Real-Time Usage Info
+*   **For Users:** View your active AI model and the exact tokens consumed in your current session by hovering over the new "Model Usage" info button (`info-btn`) in the ChatHeader. Close a session completely to reset the timer and token count back to zero instantly!
+*   **Technical Details:** Implemented dynamic hook state logic (`useMiniChat.ts`) that tracks ephemeral session tokens via `localStorage` (saved under `minichat_session_tokens`) and manages a conditional timer that starts exclusively when messages are present. All states are completely reset when the session is closed, ensuring the chat window only becomes visible again when you submit a new query from the CommandBar.
+
+### <img src="https://api.iconify.design/lucide:brain.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Memory Consolidation (Dreaming System)
+*   **For Users:** Hades has an "artificial sleep." It reads recent chat history files to form memories of who you are. You can choose which model manages this sleep and enable or disable this function in the settings panel.
+*   **Technical Details:** The `DreamService` schedules background analysis cycles, synthesizing and storing consolidated user insights in a highly compressed format in a local `learnings.json` file.
 
 ### <img src="https://api.iconify.design/lucide:list-todo.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Task Management (To-Do & Reminders)
 *   **For Users:** Schedule and list your daily tasks and quick reminders directly inside Hades! Keep your workflow organized without needing external notebook apps.
@@ -65,9 +65,9 @@ Imagine having a personal assistant who is like a superhero on your computer:
     *   **No Active OS Notifications:** Currently, the scheduler acts as a lightning-fast interactive to-do ledger. It does not issue system-level audio alarms or desktop push notifications when a task's target time is reached.
     *   **No Automated Actions:** Scheduled tasks do not trigger active shell commands, scripts, or automated web browsing actions.
 
-### <img src="https://api.iconify.design/lucide:message-square.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Session-Specific MiniChat & Real-Time Usage Info
-*   **For Users:** View your active AI model and the exact tokens consumed in your current session by hovering over the new "Model Usage" info button (`info-btn`) in the ChatHeader. Close a session completely to reset the timer and token count back to zero instantly!
-*   **Technical Details:** Implemented dynamic hook state logic (`useMiniChat.ts`) that tracks ephemeral session tokens via `localStorage` (saved under `minichat_session_tokens`) and manages a conditional timer that starts exclusively when messages are present. All states are completely reset when the session is closed, ensuring the chat window only becomes visible again when you submit a new query from the CommandBar.
+### <img src="https://api.iconify.design/lucide:lock.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Bank-Grade Encrypted Storage (Zero .env Leaks!)
+*   **For Users:** No complex configuration files to edit. Just open the Settings panel (`Alt+S`), paste your Google Gemini and Tavily API keys, and click **Save**. Hades secures them with strong encryption instantly.
+*   **Technical Details:** Uses a secure symmetric encryption wrapper powered by **AES-256-CBC** with keys derived using **scrypt** based on your OS username. Secret keys are never stored in plain text.
 
 ---
 
