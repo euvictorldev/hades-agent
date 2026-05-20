@@ -16,7 +16,7 @@
       <h1 style="margin-top: 0;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
       <p><strong>Hades Agent is an invisible, ultra-fast desktop AI companion built with Electron, React, and Gemini Live API.</strong></p>
       <p>Hades floats over your open windows, listens and talks in real-time, and consolidates offline memory autonomously through background dreaming cycles. It includes a built-in task scheduler to organize your daily workflow.</p>
-      <p>🛡️ <strong>Safety Limits:</strong> The agent operates under a strict offline security sandbox with <strong>zero system-write access</strong>. It cannot create, delete, or modify any files on your PC, nor run system scripts. The AI is limited strictly to real-time web searches (via Tavily Search API) and local memory updates, ensuring absolute system safety.</p>
+      <p><strong>Safety Limits:</strong> The agent operates under a strict offline security sandbox with <strong>zero system-write access</strong>. It cannot create, delete, or modify any files on your PC, nor run system scripts. The AI is limited strictly to real-time web searches (via Tavily Search API) and local memory updates, ensuring absolute system safety.</p>
     </td>
   </tr>
 </table>
@@ -133,7 +133,7 @@ Hades Agent was co-engineered with Google's **Antigravity** (Advanced Agentic Co
 ## <img src="https://api.iconify.design/lucide:sparkles.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Inspiration & Credits
 
 > [!NOTE]
-> Hades Agent is inspired by **Persua**, a conceptual real-time voice and AI assistant created by software engineer **Lucas Montano** (@lucasmontano). Hades was engineered entirely from scratch to explore raw PCM streaming, full-duplex WebSockets, and content-protection algorithms in Electron. Thank you, Lucas, for inspiring the community! 🚀
+> Hades Agent is inspired by **Persua**, a conceptual real-time voice and AI assistant created by software engineer **Lucas Montano** (@lucasmontano). Hades was engineered entirely from scratch to explore raw PCM streaming, full-duplex WebSockets, and content-protection algorithms in Electron. Thank you, Lucas, for inspiring the community!
 
 ---
 
@@ -147,4 +147,4 @@ Hades Agent was co-engineered with Google's **Antigravity** (Advanced Agentic Co
 
 MIT — See [LICENSE](LICENSE).
 
-Built with 🖤 by [Victor L.](https://github.com/victorl-dev)
+Built with dedication by [Victor L.](https://github.com/victorl-dev)
