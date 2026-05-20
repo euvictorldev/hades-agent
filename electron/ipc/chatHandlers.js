@@ -47,7 +47,7 @@ function registerChatHandlers() {
 
       // Run AI session generation asynchronously without blocking the UI
       let firstMessageContent = 'Nova Sessão';
-      const firstUserMessage = history.find(msg => msg.role === 'user');
+      const firstUserMessage = history.find(msg => msg.role === 'user' || msg.sender === 'user');
       if (firstUserMessage) {
         if (firstUserMessage.parts) {
           const textPart = firstUserMessage.parts.find(p => p.text);
