@@ -2,18 +2,31 @@
   <img src="https://res.cloudinary.com/dmii83n8i/image/upload/fl_preserve_transparency/v1779237561/hades-agent_cx7vq7.jpg?_s=public-apps" alt="Hades Banner" width="100%" style="border-radius: 16px; max-width: 800px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
 </p>
 
-# Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" />
+<table>
+  <tr>
+    <td width="35%" align="center" valign="middle">
+      <img src="public/icon/icon.png" width="340" style="border-radius: 48px; border: 6px solid #ff2a2a; box-shadow: 0 20px 50px rgba(255, 42, 42, 0.5); display: block; margin-bottom: 20px;" alt="Hades Agent Logo" />
+      <p align="center" style="margin-top: 12px; margin-bottom: 0;">
+        <img src="https://img.shields.io/badge/License-MIT-red?style=flat-square&color=150202" alt="License" style="display: inline-block; vertical-align: middle;" />
+        <img src="https://img.shields.io/badge/Electron-42.0-red?style=flat-square&logo=electron&logoColor=white&color=150202" alt="Electron" style="display: inline-block; vertical-align: middle;" />
+        <img src="https://img.shields.io/badge/React-19.0-red?style=flat-square&logo=react&logoColor=61DAFB&color=150202" alt="React" style="display: inline-block; vertical-align: middle;" />
+      </p>
+    </td>
+    <td width="65%" valign="top">
+      <h1>Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
+      <p><strong>Hades Agent: An invisible, ultra-fast desktop AI companion built with Electron and Gemini Live API. Featuring real-time voice streaming, a native Stealth Mode (invisible to OBS/screen-shares), lightning-fast web search, plus background memory dreaming.</strong></p>
+      <p>Hades Agent is an ultra-lightweight AI companion that lives on your computer in an entirely new way. Instead of being stuck inside a browser tab, it floats freely over your open windows, listens and talks to you in real-time, searches the web in seconds, and automatically hides from screen recordings to keep your data 100% safe!</p>
+      <p>Built with <strong>Electron</strong>, <strong>React</strong>, <strong>Vite</strong>, and powered by Google's cutting-edge <strong>Gemini Multimodal Live API</strong>, Hades is engineered to be extremely fast, responsive, and smart.</p>
+    </td>
+  </tr>
+</table>
 
-<p align="center">
+<p align="center" style="margin-top: 20px;">
   <a href="https://github.com/victorl-dev/Hades-Agent/releases"><img src="https://img.shields.io/badge/Releases-Download-FF2A2A?style=for-the-badge&logo=github" alt="Releases"></a>
   <a href="https://github.com/victorl-dev/Hades-Agent/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
   <a href="https://github.com/victorl-dev/Hades-Agent"><img src="https://img.shields.io/badge/Built%20With-Gemini%20Live%20API-blueviolet?style=for-the-badge" alt="Built with Gemini Live"></a>
   <a href="https://github.com/victorl-dev/Hades-Agent"><img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Platform: Windows"></a>
 </p>
-
-**An invisible, ultra-fast desktop AI companion built with Electron and Gemini Multimodal Live API.** It features real-time voice streaming, a native Stealth Mode (invisible to OBS & screen-shares), lightning-fast web search, plus background memory dreaming. Hades floats freely over your open windows, listens and talks in real-time, queries the internet in seconds, and automatically hides from all screen captures to keep your data 100% safe.
-
-Use your own API keys for Tavily and Google Gemini. Set up your endpoints, toggle features, or customize shortcuts in a single click in the Settings panel — no complex config files, zero plaintext environment variables.
 
 <table>
 <tr><td><b>Anti-Recording Shield</b></td><td>Native OS-level content protection. Hades magically becomes completely invisible on OBS Studio, Discord, Teams, Zoom screen-shares, and Windows screenshots to prevent private data leaks.</td></tr>
@@ -21,13 +34,12 @@ Use your own API keys for Tavily and Google Gemini. Set up your endpoints, toggl
 <tr><td><b>Spotlight Command Bar</b></td><td>Press <code>Alt+D</code> to summon a floating, transparent search bar. Get real-time internet-enabled answers instantly powered by the Tavily Search API.</td></tr>
 <tr><td><b>Session-Specific MiniChat</b></td><td>Dynamic chat HUD showing active model specs and token consumption in real-time. Wipe your session instantly to reset timers, history, and usage cost back to zero.</td></tr>
 <tr><td><b>Memory dreaming consolidation</b></td><td>Offline artificial sleep schedules background cycles to synthesize recent logs, automatically updating your highly compressed local <code>learnings.json</code> memory profile.</td></tr>
-<tr><td><b>AES-256 local vault</b></td><td>Zero plain-text <code>.env</code> key files on your disk. Encrypts your API credentials using AES-256-CBC with keys derived via scrypt based on your OS username.</td></tr>
 <tr><td><b>Task & Reminder scheduler</b></td><td>Offline to-do ledger managed through secure IPC database handlers to schedule and monitor daily tasks fully local and offline.</td></tr>
 </table>
 
 ---
 
-## Getting Started
+## <img src="https://api.iconify.design/lucide:download.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Getting Started
 
 ### For Users (Download Installer)
 1. Head to the **[Releases](https://github.com/victorl-dev/Hades-Agent/releases)** page.
@@ -51,7 +63,7 @@ npm run dev
 
 ---
 
-## Keyboard Shortcuts
+## <img src="https://api.iconify.design/lucide:keyboard.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Keyboard Shortcuts
 
 Hades floats quietly over your desktop and can be summoned instantly from anywhere:
 
@@ -67,7 +79,7 @@ Hades floats quietly over your desktop and can be summoned instantly from anywhe
 
 ---
 
-## System Architecture
+## <img src="https://api.iconify.design/lucide:network.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> System Architecture
 
 Hades orchestrates transparent renderer overlay windows and backend security pipelines using high-speed IPC event protocols:
 
@@ -110,7 +122,7 @@ graph TD
 
 ---
 
-## AI-Assisted Engineering
+## <img src="https://api.iconify.design/lucide:cpu.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> AI-Assisted Engineering
 
 Hades Agent was co-engineered with Google's **Antigravity** (Advanced Agentic Coding Assistant by Google DeepMind) using **Subagent-Driven Development (SDD)**:
 - **Modular Autonomy:** Specialized subagents built individual IPC event engines, cryptography wrappers, and voice pipelines under high-speed validation loops.
@@ -118,20 +130,20 @@ Hades Agent was co-engineered with Google's **Antigravity** (Advanced Agentic Co
 
 ---
 
-## Inspiration & Credits
+## <img src="https://api.iconify.design/lucide:sparkles.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Inspiration & Credits
 
 > [!NOTE]
 > Hades Agent is inspired by **Persua**, a conceptual real-time voice and AI assistant created by software engineer **Lucas Montano** (@lucasmontano). Hades was engineered entirely from scratch to explore raw PCM streaming, full-duplex WebSockets, and content-protection algorithms in Electron. Thank you, Lucas, for inspiring the community! 🚀
 
 ---
 
-## Star History
+## <img src="https://api.iconify.design/lucide:star.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=victorl-dev/Hades-Agent&type=Date)](https://star-history.com/#victorl-dev/Hades-Agent&Date)
 
 ---
 
-## License
+## <img src="https://api.iconify.design/lucide:file-text.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> License
 
 MIT — See [LICENSE](LICENSE).
 
