@@ -4,6 +4,7 @@ import { buildHadesContext, getHadesSystemPrompt } from '../constants/prompts';
 import { GEMINI_TOOLS } from '../constants/tools';
 import { electronService } from '../services/electron';
 import { prepareGeminiPayload, processGeminiParts } from '../utils/ai';
+import { mapModelIdToApiName } from '../constants/models';
 
 /**
  * Hook to manage Gemini AI inference and tool execution.
@@ -30,7 +31,8 @@ export const useGemini = (
   const fetchWithUrlContext = useCallback(async (url: string, instruction?: string): Promise<string> => {
     const settings = await electronService.getSettings();
     const apiKey = settings?.general?.apiKey || import.meta.env.VITE_GEMINI_API_KEY;
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
+    const apiModel = mapModelIdToApiName(currentModel);
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent?key=${apiKey}`;
     const prompt = instruction
       ? `${instruction}\n\nURL: ${url}`
       : `Leia e extraia o conteúdo principal desta URL de forma estruturada: ${url}`;
@@ -183,8 +185,9 @@ export const useGemini = (
       if (textContent) aiText = textContent;
 
       if (data.usageMetadata?.totalTokenCount) {
-        totalTokens = data.usageMetadata.totalTokenCount;
-        await electronService.updateTokens(totalTokens);
+        const count = data.usageMetadata.totalTokenCount;
+        totalTokens += count;
+        await electronService.updateTokens(count);
       }
 
       if (functionCalls.length === 0) {
@@ -230,7 +233,7 @@ export const useGemini = (
    * Main entry point for AI inference.
    * Builds enriched context (date, time, timezone, etc.) and runs the ReAct loop.
    */
-  const handleAIResponse = useCallback(async (userMsgText: string, currentHistory: ChatMessage[]) => {
+  const handleAIResponse = useCallback(async (userMsgText: string, currentHistory: ChatMessage[]): Promise<number> => {
     setIsThinking(true);
 
     try {
@@ -250,7 +253,8 @@ export const useGemini = (
       const ctx = buildHadesContext(activeSkills, learnings);
       const systemPrompt = getHadesSystemPrompt(ctx);
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
+      const apiModel = mapModelIdToApiName(currentModel);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent?key=${apiKey}`;
       const contents = prepareGeminiPayload(systemPrompt, currentHistory);
 
       if (userMsgText && !currentHistory.some(m => m.text === userMsgText)) {
@@ -276,9 +280,12 @@ export const useGemini = (
         console.error("Erro ao fazer log da sessão", logErr);
       }
 
+      return totalTokens;
+
     } catch (error: any) {
       console.error("[useGemini] Inference error:", error);
       addMessage(`Erro: ${error.message}`, 'ia');
+      return 0;
     } finally {
       setIsThinking(false);
       setActiveTool(null);

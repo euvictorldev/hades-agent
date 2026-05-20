@@ -31,13 +31,31 @@ export const useMiniChat = () => {
     const saved = localStorage.getItem('minichat_timer');
     return saved ? parseInt(saved, 10) : 0;
   });
-  const [tokens, setTokens] = useState(0);
+  const [tokens, setTokens] = useState<number>(() => {
+    const saved = localStorage.getItem('minichat_session_tokens');
+    return saved ? parseInt(saved, 10) : 0;
+  });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [menuView, setMenuView] = useState<'main' | 'models'>('main');
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Timer and Tokens effect
+  // Load initial settings
   useEffect(() => {
+    electronService.getSettings().then(settings => {
+      if (settings?.general?.minichatModel) {
+        setCurrentModel(settings.general.minichatModel);
+      }
+    });
+  }, []);
+
+  // Timer effect: ticks only when active session exists (messages.length > 0)
+  useEffect(() => {
+    if (messages.length === 0) {
+      setTimer(0);
+      localStorage.removeItem('minichat_timer');
+      return;
+    }
+
     const timerInterval = setInterval(() => {
       setTimer(prev => {
         const next = prev + 1;
@@ -45,16 +63,9 @@ export const useMiniChat = () => {
         return next;
       });
     }, 1000);
-    
-    electronService.getTotalTokens().then(t => setTokens(t));
-    electronService.getSettings().then(settings => {
-      if (settings?.general?.minichatModel) {
-        setCurrentModel(settings.general.minichatModel);
-      }
-    });
 
     return () => clearInterval(timerInterval);
-  }, []);
+  }, [messages.length]);
 
   // Listen for live settings updates from the main process
   useEffect(() => {
@@ -79,11 +90,14 @@ export const useMiniChat = () => {
       const nextMsg = pendingMessagesRef.current[0];
       setPendingMessages(prev => prev.slice(1));
       const updatedHistory = addMessage(nextMsg.text, 'user', nextMsg.image);
-      await handleAIResponse(nextMsg.text, updatedHistory);
+      const loopTokens = await handleAIResponse(nextMsg.text, updatedHistory);
       
       // Update tokens after response
-      const t = await electronService.getTotalTokens();
-      setTokens(t);
+      setTokens(prev => {
+        const next = prev + (loopTokens || 0);
+        localStorage.setItem('minichat_session_tokens', next.toString());
+        return next;
+      });
 
       processNextPending();
     } else {
@@ -115,9 +129,12 @@ export const useMiniChat = () => {
         setIsBusy(true);
         // addMessage uses a ref internally so it's safe to call without depending on messages state
         const updatedHistory = addMessage(msg, 'user', image);
-        handleAIResponse(msg, updatedHistory).then(async () => {
-          const t = await electronService.getTotalTokens();
-          setTokens(t);
+        handleAIResponse(msg, updatedHistory).then(async (loopTokens) => {
+          setTokens(prev => {
+            const next = prev + (loopTokens || 0);
+            localStorage.setItem('minichat_session_tokens', next.toString());
+            return next;
+          });
           processNextPending();
         });
       }
@@ -129,9 +146,12 @@ export const useMiniChat = () => {
       setIsBusy(true);
       // We must get the latest messages for the prompt
       electronService.getChat().then(currentHistory => {
-        handleAIResponse(prompt, currentHistory || []).then(async () => {
-          const t = await electronService.getTotalTokens();
-          setTokens(t);
+        handleAIResponse(prompt, currentHistory || []).then(async (loopTokens) => {
+          setTokens(prev => {
+            const next = prev + (loopTokens || 0);
+            localStorage.setItem('minichat_session_tokens', next.toString());
+            return next;
+          });
           processNextPending();
         });
       });
@@ -187,6 +207,8 @@ export const useMiniChat = () => {
     startResizing,
     clearHistory: () => {
       setTimer(0);
+      setTokens(0);
+      localStorage.removeItem('minichat_session_tokens');
       clearHistory();
     },
     copyToClipboard

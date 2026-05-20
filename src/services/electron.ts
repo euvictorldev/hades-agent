@@ -143,6 +143,8 @@ class ElectronService {
   onSettingsUpdated(callback: (settings: SettingsData) => void) {
     return this.electron?.onSettingsUpdated(callback) || (() => {});
   }
+  async disableShortcuts() { return await this.handleResponse(this.electron?.disableShortcuts(), undefined, 'disableShortcuts'); }
+  async enableShortcuts() { return await this.handleResponse(this.electron?.enableShortcuts(), undefined, 'enableShortcuts'); }
 
   async scheduleTask(args: any) { 
     return await this.handleResponse(this.electron?.scheduleTask(args), null, 'scheduleTask'); 

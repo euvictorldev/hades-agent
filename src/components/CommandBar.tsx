@@ -1,17 +1,19 @@
-import React from 'react';
-import { ChevronRight, Camera, X, Paperclip } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronRight, Camera, X, Paperclip, Plus, ChevronDown, Check } from 'lucide-react';
 import { useCommandBar } from '../hooks/useCommandBar';
 import { electronService } from '../services/electron';
+import { MODELS } from '../constants/models';
 
 /**
  * CommandBar component - A sleek, minimal input bar for AI commands.
- * Supports text input, screen capture attachments, and global shortcuts.
+ * Supports text input, local image uploads via (+), screen captures, and live model selection.
  */
 const CommandBar: React.FC = () => {
   const {
     query,
     setQuery,
     attachedImage,
+    setAttachedImage,
     inputRef,
     containerRef,
     MAX_CHARS,
@@ -19,11 +21,86 @@ const CommandBar: React.FC = () => {
     handleSend,
     handleKeyDown,
     handlePaste,
-    removeAttachment
+    removeAttachment,
+    isModelDropdownOpen,
+    setIsModelDropdownOpen
   } = useCommandBar();
+
+  const [activeModel, setActiveModel] = useState<string>('gemini-2.5-flash');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Sync settings and setup listeners on mount
+  useEffect(() => {
+    electronService.getSettings().then(settings => {
+      if (settings?.general?.minichatModel) {
+        setActiveModel(settings.general.minichatModel);
+      }
+    });
+
+    const unsubscribe = electronService.onSettingsUpdated((settings) => {
+      if (settings?.general?.minichatModel) {
+        setActiveModel(settings.general.minichatModel);
+      }
+    });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, []);
+
+  // Close dropdown on clicking outside
+  useEffect(() => {
+    if (!isModelDropdownOpen) return;
+    const handleGlobalClick = () => {
+      setIsModelDropdownOpen(false);
+    };
+    document.addEventListener('click', handleGlobalClick);
+    return () => {
+      document.removeEventListener('click', handleGlobalClick);
+    };
+  }, [isModelDropdownOpen]);
+
+  const handleSelectModel = async (modelId: string) => {
+    setActiveModel(modelId);
+    setIsModelDropdownOpen(false);
+    try {
+      const settings = await electronService.getSettings();
+      if (settings) {
+        settings.general.minichatModel = modelId;
+        await electronService.saveSettings(settings);
+      }
+    } catch (err) {
+      console.error('Failed to save model selection from command bar:', err);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = event.target?.result as string;
+        setAttachedImage(base64);
+      };
+      reader.readAsDataURL(file);
+    }
+    // Clear value to allow selecting the same file again
+    e.target.value = '';
+  };
+
+  const activeModelData = MODELS.find(m => m.id === activeModel);
 
   return (
     <div className="app-container command-mode" ref={containerRef}>
+      {/* Hidden File Input for images ONLY */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+
       <div className="command-main">
         <div className="command-icon">
           <ChevronRight size={20} color="#dc2626" />
@@ -52,7 +129,7 @@ const CommandBar: React.FC = () => {
 
           {attachedImage && (
             <AttachmentIndicator 
-              fileName="screenshot.png" 
+              fileName="imagem.png" 
               onRemove={removeAttachment} 
             />
           )}
@@ -60,26 +137,156 @@ const CommandBar: React.FC = () => {
       </div>
       
       <div className="command-footer">
-        <FooterButton 
-          icon={<Camera size={12} color="#dc2626" />} 
-          label="Screenshot (Ctrl+E)" 
-          onClick={handleCapture} 
-        />
-        
-        <FooterButton 
-          label="Enviar" 
-          keycap="Enter"
-          onClick={handleSend} 
-        />
-        
-        <FooterButton 
-          label="Cancelar" 
-          keycap="Esc"
-          onClick={() => {
-            electronService.closeWindow();
-          }} 
-        />
+        {/* + File Picker Button (Far Left) */}
+        <button 
+          type="button" 
+          className="footer-btn" 
+          onClick={() => fileInputRef.current?.click()}
+          style={{ padding: '6px 10px' }}
+          title="Upload Imagem"
+        >
+          <Plus size={14} color="#dc2626" />
+        </button>
 
+        {/* Screenshot / Capture Screen Button */}
+        <button 
+          type="button" 
+          className="footer-btn" 
+          onClick={handleCapture}
+          style={{ padding: '6px 10px' }}
+          title="Capturar Tela (Ctrl+E)"
+        >
+          <Camera size={14} color="#dc2626" />
+        </button>
+
+        {/* Active Model Selector Pill */}
+        <button 
+          type="button"
+          className="footer-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsModelDropdownOpen(!isModelDropdownOpen);
+          }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            background: 'rgba(220, 38, 38, 0.04)',
+            border: '1px solid rgba(220, 38, 38, 0.12)'
+          }}
+          title="Selecionar Modelo"
+        >
+          <span className="keycap-text" style={{ fontSize: '11px' }}>
+            {activeModelData?.name || activeModel}
+          </span>
+          <ChevronDown 
+            size={12} 
+            color="rgba(255, 255, 255, 0.4)" 
+            style={{ 
+              transform: isModelDropdownOpen ? 'rotate(180deg)' : 'none', 
+              transition: 'transform 0.2s' 
+            }} 
+          />
+        </button>
+
+        {/* Model Selection Dropdown Menu */}
+        {isModelDropdownOpen && (
+          <div 
+            className="model-dropdown"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: '18px',
+              marginTop: '8px',
+              width: '290px',
+              background: 'rgba(8, 4, 4, 0.96)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(220, 38, 38, 0.25)',
+              borderRadius: '8px',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(220, 38, 38, 0.08)',
+              zIndex: 100,
+              padding: '6px 0',
+              animation: 'appear 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            {MODELS.map((m) => {
+              const isSelected = m.id === activeModel;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  className={`dropdown-item ${isSelected ? 'active' : ''}`}
+                  onClick={() => handleSelectModel(m.id)}
+                  style={{
+                    width: '100%',
+                    background: isSelected ? 'rgba(220, 38, 38, 0.15)' : 'transparent',
+                    border: 'none',
+                    borderLeft: isSelected ? '3px solid #dc2626' : '3px solid transparent',
+                    color: isSelected ? '#fff' : 'rgba(255,255,255,0.75)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '8px 12px',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>{m.name}</span>
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {m.tag && (() => {
+                      let bg = 'rgba(220, 38, 38, 0.15)';
+                      let border = '1px solid rgba(220, 38, 38, 0.3)';
+                      let color = '#ef4444';
+                      
+                      if (m.tag === 'Thinking') {
+                        bg = 'rgba(245, 158, 11, 0.15)';
+                        border = '1px solid rgba(245, 158, 11, 0.3)';
+                        color = '#f59e0b';
+                      } else if (m.tag === 'Live') {
+                        bg = 'rgba(6, 182, 212, 0.15)';
+                        border = '1px solid rgba(6, 182, 212, 0.3)';
+                        color = '#06b6d4';
+                      } else if (m.tag === 'Research') {
+                        bg = 'rgba(168, 85, 247, 0.15)';
+                        border = '1px solid rgba(168, 85, 247, 0.3)';
+                        color = '#a855f7';
+                      } else if (m.tag === 'Agent') {
+                        bg = 'rgba(16, 185, 129, 0.15)';
+                        border = '1px solid rgba(16, 185, 129, 0.3)';
+                        color = '#10b981';
+                      }
+                      
+                      return (
+                        <span style={{
+                          background: bg,
+                          border: border,
+                          color: color,
+                          fontSize: '9px',
+                          fontWeight: 700,
+                          padding: '1px 5px',
+                          borderRadius: '4px',
+                          textTransform: 'uppercase'
+                        }}>
+                          {m.tag}
+                        </span>
+                      );
+                    })()}
+                    {isSelected && <Check size={12} color="#ef4444" />}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Character Counter */}
         <div className="char-counter" style={{ 
           position: 'absolute',
           right: '24px',
@@ -92,8 +299,8 @@ const CommandBar: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /**
  * Sub-component for showing attached files.
@@ -123,9 +330,9 @@ const AttachmentIndicator: React.FC<{ fileName: string; onRemove: () => void }> 
       type="button"
       className="remove-attachment-btn"
       onClick={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        onRemove()
+        e.preventDefault();
+        e.stopPropagation();
+        onRemove();
       }}
       style={{ 
         background: 'rgba(255,255,255,0.15)', 
@@ -145,30 +352,6 @@ const AttachmentIndicator: React.FC<{ fileName: string; onRemove: () => void }> 
       <X size={12} />
     </button>
   </div>
-)
+);
 
-/**
- * Sub-component for footer buttons with optional icons or keycaps.
- */
-const FooterButton: React.FC<{ 
-  label: string; 
-  onClick: () => void; 
-  icon?: React.ReactNode; 
-  keycap?: string;
-}> = ({ label, onClick, icon, keycap }) => (
-  <button 
-    type="button"
-    className="footer-btn" 
-    onClick={onClick}
-  >
-    {(icon || keycap) && (
-      <span className="keycap-box" style={{ color: '#dc2626' }}>
-        {icon || keycap}
-      </span>
-    )}
-    <span className="keycap-text">{label}</span>
-  </button>
-)
-
-export default CommandBar
-
+export default CommandBar;

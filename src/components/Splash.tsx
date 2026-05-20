@@ -1,40 +1,56 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+
+// ==========================================
+// CONFIGURAÇÃO DO ÍCONE (Ajuste aqui)
+// ==========================================
+// Você pode alterar a largura e a altura do ícone livremente aqui.
+// O texto ASCII Figlet está isolado e não será afetado pelo tamanho do ícone.
+const ICON_WIDTH = '145px';
+const ICON_HEIGHT = '145px';
 
 const Splash: React.FC = () => {
-  const [phase, setPhase] = useState<'entering' | 'visible' | 'leaving'>('entering')
+  const [phase, setPhase] = useState<'entering' | 'visible' | 'leaving'>('entering');
 
   useEffect(() => {
     // Fase de entrada: starts 50ms after mount to trigger transition smoothly
-    const enterTimer = setTimeout(() => setPhase('visible'), 50)
+    const enterTimer = setTimeout(() => setPhase('visible'), 50);
     // Fase de saída começa após 2.4s
-    const leaveTimer = setTimeout(() => setPhase('leaving'), 2400)
+    const leaveTimer = setTimeout(() => setPhase('leaving'), 2400);
 
     return () => {
-      clearTimeout(enterTimer)
-      clearTimeout(leaveTimer)
-    }
-  }, [])
+      clearTimeout(enterTimer);
+      clearTimeout(leaveTimer);
+    };
+  }, []);
 
-  let opacity = 0
-  let transform = 'scale(0.88) translateY(12px)'
+  let opacity = 0;
+  let transform = 'scale(0.92) translateY(12px)';
 
   if (phase === 'visible') {
-    opacity = 1
-    transform = 'scale(1) translateY(0px)'
+    opacity = 1;
+    transform = 'scale(1) translateY(0px)';
   } else if (phase === 'leaving') {
-    opacity = 0
-    transform = 'scale(1.05) translateY(-12px)'
+    opacity = 0;
+    transform = 'scale(1.03) translateY(-12px)';
   }
 
   // Premium, continuous transition that is always active
-  const transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+  const transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+
+  // HADES-AGENT em fonte Figlet ANSI Shadow
+  const asciiArt = `██╗  ██╗ █████╗ ██████╗ ███████╗███████╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗
+██║  ██║██╔══██╗██╔══██╗██╔════╝██╔════╝      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝
+███████║███████║██║  ██║█████╗  ███████╗█████╗███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   
+██╔══██║██╔══██║██║  ██║██╔══╝  ╚════██║╚════╝██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║   
+██║  ██║██║  ██║██████╔╝███████╗███████║      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   
+╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝`;
 
   return (
     <div
       style={{
         width: '100vw',
         height: '100vh',
-        background: 'transparent',
+        background: '#000000', // Fundo preto premium
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -50,43 +66,60 @@ const Splash: React.FC = () => {
           transition,
           display: 'flex',
           alignItems: 'center',
-          gap: '24px'
+          gap: '24px',
+          padding: '16px',
         }}
       >
-        <img
-          src="/icon/icon.png"
-          alt="Hades Icon"
-          style={{
-            width: '180px',
-            height: '180px',
-            borderRadius: '4px 16px 4px 16px',
-            border: '1px solid #ff2a2a',
-            filter: 'drop-shadow(4px 4px 0 #000000)',
-            objectFit: 'cover'
-          }}
-        />
-        <span
-          style={{
-            fontFamily: "'Press Start 2P', monospace",
-            fontSize: '48px',
-            fontWeight: 400,
-            letterSpacing: '3px',
-            color: '#ff2020',
-            display: 'block',
-            lineHeight: 1,
-            background: 'linear-gradient(180deg, #ff2a2a 0%, #cc0000 45%, #6b0000 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            filter: 'drop-shadow(6px 6px 0 #000000)',
-            whiteSpace: 'nowrap'
+        {/* CONTAINER DO ÍCONE: Isolado para redimensionamento independente */}
+        <div 
+          style={{ 
+            width: ICON_WIDTH, 
+            height: ICON_HEIGHT,
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
-          HADES-AGENT
-        </span>
+          <img
+            src="/icon/icon.png"
+            alt="Hades Icon"
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: '4px 16px 4px 16px',
+              border: '1px solid #ff2a2a',
+              filter: 'drop-shadow(0 0 15px rgba(220, 38, 38, 0.35))',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
+
+        {/* CONTAINER DO TEXTO FIGLET: Totalmente isolado do tamanho do ícone */}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <pre
+            style={{
+              fontFamily: "'Courier New', Courier, monospace",
+              fontSize: '12px',
+              lineHeight: '1.2',
+              fontWeight: 'bold',
+              margin: 0,
+              padding: 0,
+              background: 'linear-gradient(180deg, #ff3333 0%, #a30000 70%, #540000 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.5))',
+              whiteSpace: 'pre',
+              pointerEvents: 'none',
+            }}
+          >
+            {asciiArt}
+          </pre>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Splash
+export default Splash;

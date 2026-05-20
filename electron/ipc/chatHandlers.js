@@ -57,6 +57,7 @@ function registerChatHandlers() {
         store.saveSusurroHistory([]);
       } else {
         store.saveChatHistory([]);
+        appState.chatHasMessages = false;
         const windowManager = require('../windows/windowManager');
         const chatWin = windowManager.get('chat');
         if (chatWin && !chatWin.isDestroyed()) {

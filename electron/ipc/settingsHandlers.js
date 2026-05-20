@@ -1,4 +1,4 @@
-const { ipcMain, BrowserWindow } = require('electron');
+const { ipcMain, BrowserWindow, globalShortcut } = require('electron');
 const jsonStore = require('../store/jsonStore');
 const logger = require('../services/logger');
 const registerGlobalShortcuts = require('../shortcuts');
@@ -96,6 +96,30 @@ function registerSettingsHandlers() {
       return { success: true, data: { susurroHistory: transcriptions, chatHistory: minichat } };
     } catch (err) {
       logger.error('SETTINGS', 'get-history-data error', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // Temporarily unregisters all global shortcuts to allow recording new keys without triggering actions
+  ipcMain.handle('disable-shortcuts', () => {
+    try {
+      globalShortcut.unregisterAll();
+      logger.info('SHORTCUTS', 'All global shortcuts temporarily unregistered (Keybind recording started).');
+      return { success: true };
+    } catch (err) {
+      logger.error('SHORTCUTS', 'Failed to disable global shortcuts', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // Re-registers all global shortcuts when recording is stopped or completed
+  ipcMain.handle('enable-shortcuts', () => {
+    try {
+      registerGlobalShortcuts();
+      logger.info('SHORTCUTS', 'All global shortcuts re-registered (Keybind recording stopped).');
+      return { success: true };
+    } catch (err) {
+      logger.error('SHORTCUTS', 'Failed to enable global shortcuts', err);
       return { success: false, error: err.message };
     }
   });

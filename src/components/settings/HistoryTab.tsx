@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search, Mic, MessageSquare, Clock, Hash, ArrowLeft, Copy, Check } from 'lucide-react';
+import { Search, Mic, MessageSquare, Clock, Hash, ArrowLeft, Copy, Check, Image } from 'lucide-react';
 import { electronService } from '../../services/electron';
 import { MessageBubble } from '../chat/MessageBubble';
 import { ChatMessage } from '../../types';
@@ -222,7 +222,7 @@ const HistoryTab: React.FC = () => {
                     )}
                     {hasImages && (
                       <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        🖼 imagens
+                        <Image size={11} /> imagens
                       </span>
                     )}
                   </div>

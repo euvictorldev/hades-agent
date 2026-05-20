@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SettingsData } from '../../types/electron';
 import { Keyboard, RotateCcw, HelpCircle, Check, AlertCircle } from 'lucide-react';
+import { electronService } from '../../services/electron';
 
 interface ShortcutsTabProps {
   settings: SettingsData['shortcuts'];
@@ -25,6 +26,19 @@ const ShortcutsTab: React.FC<ShortcutsTabProps> = ({ settings = {}, updateSettin
     toggleSusurro: settings?.toggleSusurro || DEFAULTS.toggleSusurro,
     toggleVoice: settings?.toggleVoice || DEFAULTS.toggleVoice
   };
+
+  // Disable global shortcuts when recording, re-enable when stopped or unmounted
+  useEffect(() => {
+    if (recordingKey) {
+      electronService.disableShortcuts();
+    } else {
+      electronService.enableShortcuts();
+    }
+
+    return () => {
+      electronService.enableShortcuts();
+    };
+  }, [recordingKey]);
 
   useEffect(() => {
     if (!recordingKey) return;
@@ -136,7 +150,9 @@ const ShortcutsTab: React.FC<ShortcutsTabProps> = ({ settings = {}, updateSettin
       </div>
 
       <div className="section-header">
-        <span>⌨️ Atalhos Globais</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Keyboard size={16} /> Atalhos Globais
+        </span>
       </div>
 
       {errorMsg && (
@@ -184,8 +200,8 @@ const ShortcutsTab: React.FC<ShortcutsTabProps> = ({ settings = {}, updateSettin
                   {isModified && (
                     <span style={{
                       fontSize: '10px',
-                      background: 'rgba(192, 132, 252, 0.15)',
-                      color: '#c084fc',
+                      background: 'rgba(239, 68, 68, 0.15)',
+                      color: '#ef4444',
                       padding: '2px 6px',
                       borderRadius: '4px',
                       fontWeight: 500
@@ -208,9 +224,9 @@ const ShortcutsTab: React.FC<ShortcutsTabProps> = ({ settings = {}, updateSettin
                   }}
                   className={`settings-input-shortcut ${isRecording ? 'recording' : ''}`}
                   style={{
-                    background: isRecording ? 'rgba(138, 43, 226, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-                    border: isRecording ? '1px solid #8a2be2' : '1px solid rgba(255, 255, 255, 0.1)',
-                    color: isRecording ? '#c084fc' : '#fff',
+                    background: isRecording ? 'rgba(220, 38, 38, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                    border: isRecording ? '1px solid #dc2626' : '1px solid rgba(255, 255, 255, 0.1)',
+                    color: isRecording ? '#ef4444' : '#fff',
                     padding: '8px 16px',
                     borderRadius: '8px',
                     fontSize: '14px',
@@ -219,7 +235,7 @@ const ShortcutsTab: React.FC<ShortcutsTabProps> = ({ settings = {}, updateSettin
                     minWidth: '150px',
                     textAlign: 'center',
                     transition: 'all 0.2s ease',
-                    boxShadow: isRecording ? '0 0 12px rgba(138, 43, 226, 0.3)' : 'none'
+                    boxShadow: isRecording ? '0 0 12px rgba(220, 38, 38, 0.3)' : 'none'
                   }}
                 >
                   {isRecording ? (
@@ -266,15 +282,15 @@ const ShortcutsTab: React.FC<ShortcutsTabProps> = ({ settings = {}, updateSettin
 
       <div style={{
         marginTop: '32px',
-        background: 'rgba(138, 43, 226, 0.05)',
-        border: '1px solid rgba(138, 43, 226, 0.1)',
+        background: 'rgba(220, 38, 38, 0.05)',
+        border: '1px solid rgba(220, 38, 38, 0.1)',
         borderRadius: '10px',
         padding: '16px 20px',
         display: 'flex',
         alignItems: 'flex-start',
         gap: '12px'
       }}>
-        <HelpCircle size={18} style={{ color: '#c084fc', marginTop: '2px', flexShrink: 0 }} />
+        <HelpCircle size={18} style={{ color: '#ef4444', marginTop: '2px', flexShrink: 0 }} />
         <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
           <strong>Como alterar um atalho:</strong> Clique no botão do atalho desejado para iniciar a gravação. Pressione a combinação de teclas no teclado (ex: <code>Alt+Shift+H</code>). O sistema validará e salvará o novo atalho automaticamente. Para cancelar, pressione <code>Esc</code>.
         </div>

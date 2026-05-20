@@ -1,6 +1,7 @@
 const { globalShortcut, app } = require('electron');
 const windowManager = require('./windows/windowManager');
 const jsonStore = require('./store/jsonStore');
+const appState = require('./appState');
 
 /**
  * Toggles the command window and associated chat window.
@@ -28,9 +29,9 @@ function toggleCommandWindow() {
     win.show();
     win.focus();
     
-    // Show chat window if it exists (handles the case where a session is already started)
-    if (chatWin && !chatWin.isDestroyed()) {
-      console.log('[SHORTCUTS] Showing existing chat window.');
+    // Show chat window if it exists and has an active session
+    if (chatWin && !chatWin.isDestroyed() && appState.chatHasMessages) {
+      console.log('[SHORTCUTS] Showing existing active chat window.');
       chatWin.show();
     }
   }

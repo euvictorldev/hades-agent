@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://res.cloudinary.com/dmii83n8i/image/upload/f_auto,q_auto/cld-sample-4.jpg" alt="Hades Banner" width="100%" style="border-radius: 16px; max-width: 800px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);" />
+</p>
+
 # Hades Agent <img src="https://res.cloudinary.com/YOUR_CLOUDINARY_USER/image/upload/v123456/hades-tray-icon.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" />
 
 <table>
@@ -21,7 +25,7 @@
 
 ---
 
-## ⚡ What is Hades? (In Simple Words!)
+## <img src="https://api.iconify.design/lucide:zap.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> What is Hades? (In Simple Words!)
 
 Imagine having a personal assistant who is like a superhero on your computer:
 1. **It Listens and Speaks:** It doesn't just read text; it understands your voice through your microphone or system audio instantly.
@@ -31,39 +35,43 @@ Imagine having a personal assistant who is like a superhero on your computer:
 
 ---
 
-## 🚀 Core Features & Technology Stack
+## <img src="https://api.iconify.design/lucide:rocket.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Core Features & Technology Stack
 
-### 🎙️ Real-Time Voice Chat (Susurro Voice HUD)
+### <img src="https://api.iconify.design/lucide:mic.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Real-Time Voice Chat (Susurro Voice HUD)
 *   **For Users:** Press `Alt+B` and speak naturally! Hades hears your voice and speaks back to you in real-time. You can see a live timer, session cost trackers, and dynamic audio wave visualizers.
 *   **Technical Details:** Captures **16kHz raw PCM audio** directly from your microphone or system audio stream, transmitting it via ultra-low latency **WebSockets** to Google's `gemini-2.5-flash-native-audio-latest` model.
 
-### 🧠 Memory Consolidation (Dreaming System)
+### <img src="https://api.iconify.design/lucide:brain.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Memory Consolidation (Dreaming System)
 *   **For Users:** Hades has an "artificial sleep." It reads recent chat history files to form memories of who you are. You can choose which model manages this sleep and enable or disable this function in the settings panel.
 *   **Technical Details:** The `DreamService` schedules background analysis cycles, synthesizing and storing consolidated user insights in a highly compressed format in a local `learnings.json` file.
 
-### 🕶️ Anti-Recording Shield (Stealth Shield)
+### <img src="https://api.iconify.design/lucide:eye-off.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Anti-Recording Shield (Stealth Shield)
 *   **For Users:** Enable "Stealth Mode" in your settings. Hades instantly becomes completely invisible to screen shares (Discord, Zoom, Teams), video recordings (OBS Studio, Camtasia), and OS-level screenshots!
 *   **Technical Details:** Applies the OS-level `setContentProtection(true)` API on all Electron windows, blocking screen capture at the Windows Desktop Window Manager (DWM) composition level.
 
-### ⌨️ Quick-Search Bar (Spotlight Command Bar)
+### <img src="https://api.iconify.design/lucide:search.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Quick-Search Bar (Spotlight Command Bar)
 *   **For Users:** Press `Alt+D` to open a search bar in the style of macOS Spotlight. Type any question, and Hades will search the internet in real-time to render highly detailed markdown answers.
 *   **Technical Details:** Sends asynchronous queries to the **Tavily Search API**, processing and rendering live search results dynamically inside transparent, reactive overlay windows.
 
-### 🔒 Bank-Grade Encrypted Storage (Zero .env Leaks!)
+### <img src="https://api.iconify.design/lucide:lock.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Bank-Grade Encrypted Storage (Zero .env Leaks!)
 *   **For Users:** No complex configuration files to edit. Just open the Settings panel (`Alt+S`), paste your Google Gemini and Tavily API keys, and click **Save**. Hades secures them with strong encryption instantly.
 *   **Technical Details:** Uses a secure symmetric encryption wrapper powered by **AES-256-CBC** with keys derived using **scrypt** based on your OS username. Secret keys are never stored in plain text.
 
-### 📋 Task Management (To-Do & Reminders)
+### <img src="https://api.iconify.design/lucide:list-todo.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Task Management (To-Do & Reminders)
 *   **For Users:** Schedule and list your daily tasks and quick reminders directly inside Hades! Keep your workflow organized without needing external notebook apps.
 *   **Technical Details:** Implemented through custom IPC task handlers that serialize and persist task structures to a secure, locally encrypted database file managed by `jsonStore.js`.
-*   **⚠️ Current Task Limitations:**
+*   **<img src="https://api.iconify.design/lucide:alert-triangle.svg?color=%23ff2a2a" width="16" height="16" align="center" style="vertical-align: middle; margin-right: 4px;" /> Current Task Limitations:**
     *   **Local Storage Only:** All tasks are kept fully offline on your own machine. There is no cloud sync, meaning your tasks never leave your computer.
     *   **No Active OS Notifications:** Currently, the scheduler acts as a lightning-fast interactive to-do ledger. It does not issue system-level audio alarms or desktop push notifications when a task's target time is reached.
     *   **No Automated Actions:** Scheduled tasks do not trigger active shell commands, scripts, or automated web browsing actions.
 
+### <img src="https://api.iconify.design/lucide:message-square.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Session-Specific MiniChat & Real-Time Usage Info
+*   **For Users:** View your active AI model and the exact tokens consumed in your current session by hovering over the new "Model Usage" info button (`info-btn`) in the ChatHeader. Close a session completely to reset the timer and token count back to zero instantly!
+*   **Technical Details:** Implemented dynamic hook state logic (`useMiniChat.ts`) that tracks ephemeral session tokens via `localStorage` (saved under `minichat_session_tokens`) and manages a conditional timer that starts exclusively when messages are present. All states are completely reset when the session is closed, ensuring the chat window only becomes visible again when you submit a new query from the CommandBar.
+
 ---
 
-## 🤖 AI-Assisted Architecture & Engineering
+## <img src="https://api.iconify.design/lucide:cpu.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> AI-Assisted Architecture & Engineering
 
 Hades Agent represents a landmark in modern **AI-assisted software engineering**. The entire repository was co-engineered with Google's **Antigravity** (Advanced Agentic Coding Assistant by Google DeepMind) using a formal, highly disciplined development paradigm:
 
@@ -73,9 +81,9 @@ Hades Agent represents a landmark in modern **AI-assisted software engineering**
 
 ---
 
-## 🚀 How to Install & Run Hades Agent
+## <img src="https://api.iconify.design/lucide:download.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> How to Install & Run Hades Agent
 
-### 📦 Option 1: For Users (Quick Stable Install)
+### <img src="https://api.iconify.design/lucide:package.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Option 1: For Users (Quick Stable Install)
 If you want to use Hades Agent in your daily life, follow this simple path:
 
 1. Go to the right sidebar of this GitHub page and click on **[Releases](https://github.com/victorl-dev/Hades-Agent/releases)**.
@@ -85,7 +93,7 @@ If you want to use Hades Agent in your daily life, follow this simple path:
 
 ---
 
-### 🛠️ Option 2: For Developers (Source Code)
+### <img src="https://api.iconify.design/lucide:terminal.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Option 2: For Developers (Source Code)
 If you want to run the code locally, debug, or contribute:
 
 1. Make sure you have **[Node.js](https://nodejs.org/)** (v18.x or newer) installed.
@@ -106,7 +114,7 @@ If you want to run the code locally, debug, or contribute:
 
 ---
 
-## ⚙️ Keyboard Shortcuts
+## <img src="https://api.iconify.design/lucide:keyboard.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Keyboard Shortcuts
 
 Hades stays quietly in your system tray (near the Windows clock) and can be summoned instantly using these shortcut keys:
 
@@ -120,7 +128,7 @@ Hades stays quietly in your system tray (near the Windows clock) and can be summ
 
 ---
 
-## 🏗️ System Architecture
+## <img src="https://api.iconify.design/lucide:network.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> System Architecture
 
 Hades uses fast IPC events to communicate between transparent overlay windows and cloud intelligence services:
 
@@ -163,10 +171,10 @@ graph TD
 
 ---
 
-## 💡 Inspiration & Credits (Inspired by Persua)
+## <img src="https://api.iconify.design/lucide:sparkles.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Inspiration & Credits (Inspired by Persua)
 
 > [!NOTE]
-> ### 🌟 Special Acknowledgement to Lucas Montano (@lucasmontano)
+> ### <img src="https://api.iconify.design/lucide:award.svg?color=%23ff2a2a" width="18" height="18" align="center" style="vertical-align: middle; margin-right: 6px;" /> Special Acknowledgement to Lucas Montano (@lucasmontano)
 > 
 > This project was inspired by the brilliant concept of **Persua**, a real-time voice and AI assistant created and demonstrated by the renowned software engineer and content creator **Lucas Montano** (@lucasmontano)!
 > 
@@ -176,7 +184,7 @@ graph TD
 
 ---
 
-## 🤝 Contributing
+## <img src="https://api.iconify.design/lucide:heart-handshake.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Contributing
 
 We welcome contributions to make Hades Agent even better! Please keep these core rules in mind:
 
@@ -186,6 +194,6 @@ We welcome contributions to make Hades Agent even better! Please keep these core
 
 ---
 
-## 📄 License
+## <img src="https://api.iconify.design/lucide:file-text.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> License
 
 This project is licensed under the **MIT License** — feel free to study, modify, and build upon it as you wish!

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SettingsData } from '../../types/electron';
+import { Sliders, Volume2 } from 'lucide-react';
 
 interface AudioTabProps {
   settings: SettingsData['audio'];
@@ -35,7 +36,9 @@ const AudioTab: React.FC<AudioTabProps> = ({ settings, updateSettings }) => {
       </div>
 
       <div className="section-header">
-        <span>⚙️ Dispositivos</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Sliders size={16} /> Dispositivos
+        </span>
       </div>
 
       <div className="setting-row">
@@ -77,7 +80,9 @@ const AudioTab: React.FC<AudioTabProps> = ({ settings, updateSettings }) => {
       </div>
 
       <div className="section-header">
-        <span>🔊 Captura de Áudio</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Volume2 size={16} /> Captura de Áudio
+        </span>
       </div>
 
       <div className="setting-row">

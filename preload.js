@@ -175,4 +175,6 @@ contextBridge.exposeInMainWorld('electron', {
     ipcRenderer.on('settings-updated', sub);
     return () => ipcRenderer.removeListener('settings-updated', sub);
   },
+  disableShortcuts: () => ipcRenderer.invoke('disable-shortcuts'),
+  enableShortcuts: () => ipcRenderer.invoke('enable-shortcuts'),
 });

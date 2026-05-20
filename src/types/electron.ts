@@ -105,6 +105,8 @@ export interface ElectronAPI {
   applyStealthMode: (enabled: boolean) => Promise<IPCResponse<void>>;
   getHistoryData: () => Promise<IPCResponse<{ susurroHistory: any[], chatHistory: any[] }>>;
   onSettingsUpdated: (callback: (settings: SettingsData) => void) => () => void;
+  disableShortcuts: () => Promise<IPCResponse<void>>;
+  enableShortcuts: () => Promise<IPCResponse<void>>;
 
   // Misc
   openExternal: (url: string) => void;

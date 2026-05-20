@@ -68,8 +68,8 @@
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #6366f1, #a855f7);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
   transition: width 0.4s cubic-bezier(0.1, 0.8, 0.2, 1);
 }
 
@@ -89,11 +89,11 @@
 
 .percentage-text {
   font-weight: 700;
-  color: #c084fc;
+  color: #ef4444;
 }
 
 .start-btn {
-  background: #4f46e5;
+  background: #dc2626;
   color: white;
   border: none;
   padding: 14px 32px;
@@ -108,7 +108,7 @@
 }
 
 .start-btn:hover:not(:disabled) {
-  background: #4338ca;
+  background: #b91c1c;
   transform: translateY(-2px);
 }
 

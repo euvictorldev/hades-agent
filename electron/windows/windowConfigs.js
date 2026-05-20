@@ -16,7 +16,7 @@ const preloadPath = path.join(__dirname, '../../preload.js');
 const windowConfigs = {
   command: {
     width: 730,
-    height: 120,
+    height: 480,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -163,8 +163,8 @@ const windowConfigs = {
     }
   },
   splash: {
-    width: 1000,
-    height: 360,
+    width: 960,
+    height: 240,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -182,8 +182,8 @@ const windowConfigs = {
     onInit: (win) => {
       const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
       win.setPosition(
-        Math.floor((sw - 1000) / 2),
-        Math.floor((sh - 360) / 2)
+        Math.floor((sw - 960) / 2),
+        Math.floor((sh - 240) / 2)
       );
       win.once('ready-to-show', () => {
         console.log('[WINDOW_CONFIGS] Splash window ready-to-show, showing now');

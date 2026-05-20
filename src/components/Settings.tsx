@@ -30,7 +30,7 @@ const Settings: React.FC = () => {
   if (isLoading || !settings) {
     return (
       <div className="settings-window" style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Loader className="animate-spin" size={32} color="#8a2be2" />
+        <Loader className="animate-spin" size={32} color="#dc2626" />
       </div>
     );
   }

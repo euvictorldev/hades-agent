@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SettingsData } from '../../types/electron';
 import { MODELS } from '../../constants/models';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Key, Cpu, Shield, Moon } from 'lucide-react';
 
 interface GeneralTabProps {
   settings: SettingsData['general'];
@@ -20,7 +20,9 @@ const GeneralTab: React.FC<GeneralTabProps> = ({ settings, updateSettings }) => 
       </div>
 
       <div className="section-header">
-        <span>🔑 Chaves de API</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Key size={16} /> Chaves de API
+        </span>
       </div>
 
       <div className="setting-row">
@@ -94,7 +96,9 @@ const GeneralTab: React.FC<GeneralTabProps> = ({ settings, updateSettings }) => 
       </div>
 
       <div className="section-header">
-        <span>🤖 Modelos em Uso</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Cpu size={16} /> Modelos em Uso
+        </span>
       </div>
 
       <div className="setting-row">
@@ -146,7 +150,9 @@ const GeneralTab: React.FC<GeneralTabProps> = ({ settings, updateSettings }) => 
       </div>
 
       <div className="section-header">
-        <span>🛡️ Privacidade</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Shield size={16} /> Privacidade
+        </span>
       </div>
 
       <div className="setting-row">
@@ -168,7 +174,9 @@ const GeneralTab: React.FC<GeneralTabProps> = ({ settings, updateSettings }) => 
       </div>
 
       <div className="section-header">
-        <span>🌙 Sistema de Dreaming (Memória e Aprendizado)</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Moon size={16} /> Sistema de Dreaming (Memória e Aprendizado)
+        </span>
       </div>
 
       <div className="setting-row">

@@ -13,6 +13,7 @@ export const useCommandBar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState('');
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
+  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
 
   // Focus and IPC event setup
   useEffect(() => {
@@ -54,12 +55,15 @@ export const useCommandBar = () => {
       inputRef.current.style.height = `${limitedTextAreaHeight}px`;
       inputRef.current.style.overflowY = scHeight > maxTextAreaHeight ? 'auto' : 'hidden';
 
-      const height = containerRef.current.offsetHeight;
+      let height = containerRef.current.offsetHeight;
+      if (isModelDropdownOpen) {
+        height += 240;
+      }
       const limitedWindowHeight = Math.min(height, 550);
       
       electronService.resizeWindow(730, limitedWindowHeight);
     }
-  }, [query, attachedImage]);
+  }, [query, attachedImage, isModelDropdownOpen]);
 
   const handleCapture = async () => {
     try {
@@ -122,6 +126,7 @@ export const useCommandBar = () => {
     query,
     setQuery,
     attachedImage,
+    setAttachedImage,
     inputRef,
     containerRef,
     MAX_CHARS,
@@ -129,6 +134,8 @@ export const useCommandBar = () => {
     handleSend,
     handleKeyDown,
     handlePaste,
-    removeAttachment
+    removeAttachment,
+    isModelDropdownOpen,
+    setIsModelDropdownOpen
   };
 };
