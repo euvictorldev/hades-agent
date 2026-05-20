@@ -13,10 +13,9 @@
       </p>
     </td>
     <td width="65%" valign="top" style="padding-left: 20px;">
-      <h1 style="margin-top: 0;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
-      <p><strong>Hades Agent is an invisible, ultra-fast desktop AI companion built with Electron, React, and Gemini Live API.</strong></p>
-      <p>Hades floats over your open windows, listens and talks in real-time, and consolidates offline memory autonomously through background dreaming cycles. It includes a built-in task scheduler to organize your daily workflow.</p>
-      <p><strong>Safety Limits:</strong> The agent operates under a strict offline security sandbox with <strong>zero system-write access</strong>. It cannot create, delete, or modify any files on your PC, nor run system scripts. The AI is limited strictly to real-time web searches (via Tavily Search API) and local memory updates, ensuring absolute system safety.</p>
+      <h1 style="margin-top: 0; margin-bottom: 8px;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
+      <p><strong>Hades is an invisible, ultra-fast desktop companion with autonomous background memory consolidation and a local task scheduler.</strong></p>
+      <p><strong>Safety Limits:</strong> Sandboxed with <strong>zero system-write access</strong> (cannot create, edit, or delete files, nor run scripts). The AI is strictly restricted to real-time Google queries (via Tavily) and local memory logs, keeping your PC 100% safe.</p>
     </td>
   </tr>
 </table>
