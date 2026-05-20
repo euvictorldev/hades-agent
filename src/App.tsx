@@ -16,7 +16,7 @@ const App: React.FC = () => {
       `%c[HADES RENDERER] Window mounted: ${windowType || 'command'}`,
       'color: #00ffcc; font-weight: bold; font-size: 14px;'
     )
-    console.log('[HADES RENDERER] Location:', window.location.href)
+    console.log('[HADES RENDERER] Location:', globalThis.location.href)
     console.log('[HADES RENDERER] Document visibilityState:', document.visibilityState)
   }, [windowType])
 
