@@ -4,19 +4,18 @@
 
 <table>
   <tr>
-    <td width="35%" align="center" valign="middle">
-      <img src="public/icon/icon.png" width="340" style="border-radius: 48px; border: 6px solid #ff2a2a; box-shadow: 0 20px 50px rgba(255, 42, 42, 0.5); display: block; margin-bottom: 20px;" alt="Hades Agent Logo" />
-      <p align="center" style="margin-top: 12px; margin-bottom: 0;">
+    <td width="35%" align="center" valign="top">
+      <img src="public/icon/icon.png" width="280" style="border-radius: 40px; border: 5px solid #ff2a2a; box-shadow: 0 15px 40px rgba(255, 42, 42, 0.4); display: block; margin-bottom: 15px;" alt="Hades Agent Logo" />
+      <p align="center" style="margin-top: 10px; margin-bottom: 0;">
         <img src="https://img.shields.io/badge/License-MIT-red?style=flat-square&color=150202" alt="License" style="display: inline-block; vertical-align: middle;" />
         <img src="https://img.shields.io/badge/Electron-42.0-red?style=flat-square&logo=electron&logoColor=white&color=150202" alt="Electron" style="display: inline-block; vertical-align: middle;" />
         <img src="https://img.shields.io/badge/React-19.0-red?style=flat-square&logo=react&logoColor=61DAFB&color=150202" alt="React" style="display: inline-block; vertical-align: middle;" />
       </p>
     </td>
-    <td width="65%" valign="top">
-      <h1>Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
-      <p><strong>Hades Agent: An invisible, ultra-fast desktop AI companion built with Electron and Gemini Live API. Featuring real-time voice streaming, a native Stealth Mode (invisible to OBS/screen-shares), lightning-fast web search, plus background memory dreaming.</strong></p>
-      <p>Hades Agent is an ultra-lightweight AI companion that lives on your computer in an entirely new way. Instead of being stuck inside a browser tab, it floats freely over your open windows, listens and talks to you in real-time, searches the web in seconds, and automatically hides from screen recordings to keep your data 100% safe!</p>
-      <p>Built with <strong>Electron</strong>, <strong>React</strong>, <strong>Vite</strong>, and powered by Google's cutting-edge <strong>Gemini Multimodal Live API</strong>, Hades is engineered to be extremely fast, responsive, and smart.</p>
+    <td width="65%" valign="top" style="padding-left: 20px;">
+      <h1 style="margin-top: 0;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779237864/icon-tray-round_gkqtv0.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
+      <p><strong>Hades Agent is an invisible, ultra-fast desktop AI companion built with Electron and Gemini Live API.</strong></p>
+      <p>Instead of being trapped in a browser, Hades floats freely over your open windows, listens and talks to you in real-time, and searches the web in seconds. Engineered with a native Stealth Mode, it automatically hides from OBS, Discord, and screen recordings to keep your keys and conversations 100% safe.</p>
     </td>
   </tr>
 </table>
