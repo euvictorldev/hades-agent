@@ -105,7 +105,7 @@ Hades lives silently in your system tray and can be summoned from any applicatio
 | Shortcut | Action |
 | :--- | :--- |
 | **`Alt+D`** | Summon / dismiss the Spotlight Command Bar |
-| **`Alt+B`** | Summon / dismiss the Susurro Voice HUD |
+| **`Alt+B`** | Summon / dismiss the Real-time Transcription HUD |
 | **`Alt+S`** | Open Settings & Shortcut Customization |
 | **`Alt+V`** | Toggle voice input mode |
 | **`Esc`** | Hide the active window and restore prior focus |
@@ -131,7 +131,7 @@ graph TD
     subgraph UI_Layers [Transparent Overlay Windows]
         CommandBar[Alt+D: Spotlight Command]:::float
         MiniChat[MiniChat Dynamic Window]:::float
-        Susurro[Alt+B: Susurro Voice HUD]:::float
+        Susurro[Alt+B: Real-time Transcription HUD]:::float
         Notification[Alerts & Notifications]:::float
         Settings[Alt+S: Settings & Shortcuts]:::float
     end
