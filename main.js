@@ -102,6 +102,7 @@ ipcMain.on('send-message', (event, message, image) => {
     const cmdWin = windowManager.get('command');
     if (cmdWin && cmdWin.isVisible()) {
       cmdWin.focus();
+      cmdWin.webContents.send('focus-input');
     }
   } else {
     // Armazena a mensagem pendente até que a janela do chat e o React estejam totalmente carregados e prontos
@@ -122,5 +123,6 @@ ipcMain.on('chat-window-ready', () => {
   const cmdWin = windowManager.get('command');
   if (cmdWin && cmdWin.isVisible()) {
     cmdWin.focus();
+    cmdWin.webContents.send('focus-input');
   }
 });

@@ -27,13 +27,16 @@ function toggleCommandWindow() {
     console.log('[SHORTCUTS] Window is hidden. Showing windows...');
     windowManager.hideAllExcept(['command', 'chat']);
     win.show();
-    win.focus();
     
     // Show chat window if it exists and has an active session
     if (chatWin && !chatWin.isDestroyed() && appState.chatHasMessages) {
-      console.log('[SHORTCUTS] Showing existing active chat window.');
-      chatWin.show();
+      console.log('[SHORTCUTS] Showing existing active chat window without stealing focus.');
+      chatWin.showInactive();
     }
+    
+    // Explicitly focus command window and send event to ensure React input is focused
+    win.focus();
+    win.webContents.send('focus-input');
   }
 }
 
