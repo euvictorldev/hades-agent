@@ -33,8 +33,8 @@
   <td>Native OS-level content protection via <code>setContentProtection</code>. Hades becomes <strong>completely invisible</strong> to OBS Studio, Discord, Teams, Zoom, and all Windows screen-capture APIs — your private data never leaks through shared screens.</td>
 </tr>
 <tr>
-  <td><b>🎙️ Voice HUD (Susurro)</b></td>
-  <td>Press <code>Alt+B</code> to talk naturally. Streams raw <strong>16 kHz PCM audio</strong> over a full-duplex WebSocket directly to the <strong>Gemini Live API</strong>, achieving sub-100ms voice-to-response latency with zero intermediate transcription step.</td>
+  <td><b>🎙️ Real-time Transcription (Alt+B)</b></td>
+  <td>Press <code>Alt+B</code> to capture and transcribe PC internal audio (like meetings or video classes) in real-time. Streams raw <strong>16 kHz PCM audio</strong> over a full-duplex WebSocket directly to the <strong>Gemini Live API</strong>, achieving sub-100ms transcription latency.</td>
 </tr>
 <tr>
   <td><b>⚡ Spotlight Command Bar</b></td>
@@ -49,8 +49,8 @@
   <td>Scheduled background AI cycles synthesize recent session logs into a <strong>compressed <code>learnings.json</code> memory profile</strong> — similar to how the brain consolidates long-term memory during sleep. Runs fully offline.</td>
 </tr>
 <tr>
-  <td><b>📋 Task & Reminder Scheduler</b></td>
-  <td>A <strong>fully local, offline task ledger</strong> managed through encrypted IPC database handlers. Schedule, monitor, and dismiss daily tasks without any cloud dependency or subscription.</td>
+  <td><b>📋 Safe Task Scheduler</b></td>
+  <td>A strictly sandboxed, <strong>offline task ledger</strong> with zero system-write permissions. Safely schedule automated web searches, create daily reminders, and organize MiniChat responses without risking modifications to your local files. Managed through encrypted IPC database handlers.</td>
 </tr>
 </table>
 
