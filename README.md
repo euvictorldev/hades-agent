@@ -177,13 +177,7 @@ Hades was co-engineered with **[Google Antigravity](https://deepmind.google/)** 
 
 ## <img src="https://api.iconify.design/lucide:star.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Star History
 
-<a href="https://www.star-history.com/?repos=victorl-dev%2Fhades-agent&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=victorl-dev/hades-agent&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=victorl-dev/hades-agent&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=victorl-dev/hades-agent&type=date&legend=top-left" />
- </picture>
-</a>
+[![Star History Chart](https://api.star-history.com/chart?repos=victorl-dev/hades-agent&type=date&legend=top-left)](https://www.star-history.com/?repos=victorl-dev%2Fhades-agent&type=date&legend=top-left)
 
 ---
 
