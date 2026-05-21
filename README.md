@@ -21,10 +21,10 @@
 </table>
 
 <p align="center" style="margin-top: 20px;">
-  <a href="https://github.com/victorl-dev/Hades-Agent/releases"><img src="https://img.shields.io/badge/Releases-Download-FF2A2A?style=for-the-badge&logo=github" alt="Releases"></a>
-  <a href="https://github.com/victorl-dev/Hades-Agent/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
-  <a href="https://github.com/victorl-dev/Hades-Agent"><img src="https://img.shields.io/badge/Built%20With-Gemini%20Live%20API-blueviolet?style=for-the-badge" alt="Built with Gemini Live"></a>
-  <a href="https://github.com/victorl-dev/Hades-Agent"><img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Platform: Windows"></a>
+  <a href="https://github.com/euvictorldev/Hades-Agent/releases"><img src="https://img.shields.io/badge/Releases-Download-FF2A2A?style=for-the-badge&logo=github" alt="Releases"></a>
+  <a href="https://github.com/euvictorldev/Hades-Agent/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/euvictorldev/Hades-Agent"><img src="https://img.shields.io/badge/Built%20With-Gemini%20Live%20API-blueviolet?style=for-the-badge" alt="Built with Gemini Live"></a>
+  <a href="https://github.com/euvictorldev/Hades-Agent"><img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Platform: Windows"></a>
 </p>
 
 <table>
@@ -60,7 +60,7 @@
 
 ### For Users (Download Installer)
 
-1. Head to the **[Releases](https://github.com/victorl-dev/Hades-Agent/releases)** page.
+1. Head to the **[Releases](https://github.com/euvictorldev/Hades-Agent/releases)** page.
 2. Download **`Hades-Agent-Setup-1.0.0.exe`** (or the `.zip` portable version).
 3. Run the installer, launch Hades, then press **`Alt+S`** to enter your API keys.
 
@@ -84,7 +84,7 @@
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/victorl-dev/Hades-Agent.git
+git clone https://github.com/euvictorldev/Hades-Agent.git
 cd Hades-Agent
 
 # 2. Install all dependencies
@@ -177,7 +177,7 @@ Hades was co-engineered with **[Google Antigravity](https://deepmind.google/)** 
 
 ## <img src="https://api.iconify.design/lucide:star.svg?color=%23ff2a2a" width="22" height="22" align="center" style="vertical-align: middle; margin-right: 8px;" /> Star History
 
-[![Star History Chart](https://api.star-history.com/chart?repos=victorl-dev/hades-agent&type=date&legend=top-left)](https://www.star-history.com/?repos=victorl-dev%2Fhades-agent&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/chart?repos=euvictorldev/hades-agent&type=date&legend=top-left)](https://www.star-history.com/?repos=euvictorldev%2Fhades-agent&type=date&legend=top-left)
 
 ---
 
@@ -185,5 +185,5 @@ Hades was co-engineered with **[Google Antigravity](https://deepmind.google/)** 
 
 MIT — See [LICENSE](LICENSE).
 
-Built with dedication by [Victor L.](https://github.com/victorl-dev)
+Built with dedication by [Victor L.](https://github.com/euvictorldev)
 
