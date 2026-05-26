@@ -17,14 +17,7 @@ interface SusurroProps {
  */
 const Susurro: React.FC<SusurroProps> = ({ activeMode = 'susurro', onSwitchMode }) => {
   const s = useSusurro(activeMode === 'susurro');
-  const [isCompactMode, setIsCompactMode] = React.useState(() => {
-    const saved = localStorage.getItem('susurro-compact-mode');
-    return saved === 'true';
-  });
 
-  const [compactOpacity, setCompactOpacity] = React.useState(() => {
-    return Number.parseFloat(localStorage.getItem('susurro-compact-opacity') || '0.7');
-  });
 
   /** Drag-to-resize handler — rAF throttled + fire-and-forget IPC. */
   const handleResizeMouseDown = useCallback((e: React.MouseEvent) => {
@@ -56,13 +49,7 @@ const Susurro: React.FC<SusurroProps> = ({ activeMode = 'susurro', onSwitchMode 
     document.addEventListener('mouseup', onUp);
   }, []);
 
-  React.useEffect(() => {
-    localStorage.setItem('susurro-compact-mode', String(isCompactMode));
-  }, [isCompactMode]);
 
-  React.useEffect(() => {
-    localStorage.setItem('susurro-compact-opacity', String(compactOpacity));
-  }, [compactOpacity]);
 
   React.useEffect(() => {
     if (activeMode !== 'susurro') {
@@ -74,14 +61,10 @@ const Susurro: React.FC<SusurroProps> = ({ activeMode = 'susurro', onSwitchMode 
 
   return (
     <div 
-      className={`app-container chat-mode susurro-mode ${isCompactMode ? 'compact-mode' : 'glassmorphic-susurro'}`}
-      style={isCompactMode ? { background: `rgba(10, 5, 5, ${compactOpacity})` } : {}}
+      className="app-container chat-mode susurro-mode glassmorphic-susurro"
     >
       {/* Status Bar / Header */}
-      {!isCompactMode && (
-        <SusurroHeader
-          isCompactMode={isCompactMode}
-          setIsCompactMode={setIsCompactMode}
+      <SusurroHeader
           timer={s.timer}
           tokens={s.tokens}
           isTranscribing={s.isTranscribing}
@@ -119,89 +102,6 @@ const Susurro: React.FC<SusurroProps> = ({ activeMode = 'susurro', onSwitchMode 
           currentSessionId={s.currentSessionId}
           isClosingSession={s.isClosingSession}
         />
-      )}
-
-      {isCompactMode && (
-        <div className="compact-controls">
-          <button
-            className="compact-action-btn"
-            onClick={s.onCloseSession}
-            title="Nova sessão"
-          >
-            <FilePlus size={14} />
-          </button>
-
-          <button
-            className={`compact-action-btn ${s.isTranscribing || s.isConnecting ? 'active' : ''}`}
-            onClick={!s.susurroPushToTalk ? s.toggleTranscriptionHades : undefined}
-            onMouseDown={(e) => {
-              if (s.susurroPushToTalk && !s.isTranscribing && !s.isConnecting) {
-                s.startTranscriptionHades();
-              }
-            }}
-            onMouseUp={s.susurroPushToTalk ? s.stopTranscriptionHades : undefined}
-            onMouseLeave={s.susurroPushToTalk ? s.stopTranscriptionHades : undefined}
-            disabled={s.isConnecting}
-            title={s.susurroPushToTalk 
-              ? (s.isTranscribing ? "Solte para enviar" : "Segure para falar")
-              : (s.isTranscribing ? "Parar Gravação" : "Iniciar Gravação")
-            }
-            style={{ 
-              borderColor: s.isTranscribing ? 'rgba(239, 68, 68, 0.5)' : undefined,
-              backgroundColor: s.isTranscribing ? 'rgba(239, 68, 68, 0.2)' : undefined
-            }}
-          >
-            {s.isTranscribing || s.isConnecting ? (
-              <Square size={14} color="#ef4444" fill="#ef4444" />
-            ) : (
-              <Mic size={14} />
-            )}
-          </button>
-
-          <button
-            className={`compact-action-btn ${s.isGlobalTranslationEnabled ? 'active' : ''}`}
-            onClick={s.handleToggleGlobalTranslation}
-            title="Tradução Global"
-          >
-            <Languages size={14} color={s.isGlobalTranslationEnabled ? "var(--accent-light)" : "currentColor"} />
-          </button>
-
-
-
-          <div className="compact-font-controls" style={{ display: 'flex', alignItems: 'center', background: 'rgba(10, 10, 10, 0.6)', backdropFilter: 'blur(4px)', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-            <button className="compact-action-btn" onClick={s.decreaseFontSize} title="Diminuir fonte" style={{ border: 'none', background: 'transparent' }}>
-              <Minus size={12} />
-            </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0 4px', fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', cursor: 'default', userSelect: 'none' }}>
-              <Type size={10} style={{ opacity: 0.5 }} />
-              <span>{s.fontSize}</span>
-            </div>
-            <button className="compact-action-btn" onClick={s.increaseFontSize} title="Aumentar fonte" style={{ border: 'none', background: 'transparent' }}>
-              <Plus size={12} />
-            </button>
-          </div>
-
-          <div className="compact-opacity-controls" style={{ display: 'flex', alignItems: 'center', background: 'rgba(10, 10, 10, 0.6)', backdropFilter: 'blur(4px)', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0 8px', marginLeft: '4px' }}>
-            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.8)', marginRight: '4px' }}>Opacidade</span>
-            <input 
-              type="range" 
-              min="0.1" 
-              max="1" 
-              step="0.05" 
-              value={compactOpacity} 
-              onChange={(e) => setCompactOpacity(Number.parseFloat(e.target.value))}
-              style={{ width: '60px', cursor: 'pointer' }}
-            />
-          </div>
-
-          <div className="compact-drag-area">
-            <GripHorizontal size={14} />
-          </div>
-          <button className="compact-action-btn" onClick={() => setIsCompactMode(false)} title="Restaurar Janela">
-            <Maximize2 size={14} />
-          </button>
-        </div>
-      )}
 
       {/* Main Chat Area */}
       <SusurroChatList
@@ -215,7 +115,6 @@ const Susurro: React.FC<SusurroProps> = ({ activeMode = 'susurro', onSwitchMode 
       />
 
       {/* Footer Controls */}
-      {!isCompactMode && (
         <div className="susurro-footer">
           <button
             className={`mic-trigger ${s.isTranscribing || s.isConnecting ? 'active' : ''} ${s.isConnecting ? 'connecting' : ''}`}
@@ -241,7 +140,6 @@ const Susurro: React.FC<SusurroProps> = ({ activeMode = 'susurro', onSwitchMode 
             </div>
           </button>
         </div>
-      )}
 
       <div
         className="resize-handle"

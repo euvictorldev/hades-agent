@@ -170,8 +170,8 @@ npm run dist
 ```
 
 This will create a `release/` folder in the root of your project containing:
-- `Hades-Agent-Setup-2.0.0.exe` (Traditional installer)
-- `Hades-Agent-2.0.0-portable.exe` (Standalone app)
+- `Hades-Agent-Setup-2.0.1.exe` (Traditional installer)
+- `Hades-Agent-2.0.1-portable.exe` (Standalone app)
 - `.zip` files and optional unpacked files.
 
 ---

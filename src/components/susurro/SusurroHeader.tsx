@@ -37,9 +37,6 @@ interface SusurroHeaderProps {
   increaseFontSize: () => void;
   decreaseFontSize: () => void;
   fontSize: number;
-
-  isCompactMode: boolean;
-  setIsCompactMode: (compact: boolean) => void;
   activeMode?: 'chat' | 'susurro';
   onSwitchMode?: (mode: 'chat' | 'susurro') => void;
   currentSessionId?: string | null;
@@ -269,9 +266,6 @@ export const SusurroHeader: React.FC<SusurroHeaderProps> = (props) => {
           <Languages size={16} />
         </button>
 
-        <button className="action-btn" onClick={() => props.setIsCompactMode(!props.isCompactMode)} title={props.isCompactMode ? "Restaurar" : "Modo Compacto"}>
-          {props.isCompactMode ? <Maximize2 size={16} /> : <Minimize2 size={16} />}
-        </button>
 
         <div className="info-wrapper">
           <button className="action-btn info-btn" title="Uso do Modelo">
