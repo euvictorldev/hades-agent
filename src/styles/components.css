@@ -124,7 +124,6 @@ input:disabled + .switch-slider {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
   z-index: 9998;
   opacity: 0;
   pointer-events: none;

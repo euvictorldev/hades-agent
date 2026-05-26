@@ -105,6 +105,11 @@ contextBridge.exposeInMainWorld('electron', {
     ipcRenderer.on('stop-susurro', sub);
     return () => ipcRenderer.removeListener('stop-susurro', sub);
   },
+  onForceSusurroMode: (callback) => {
+    const sub = (_event) => callback();
+    ipcRenderer.on('force-susurro-mode', sub);
+    return () => ipcRenderer.removeListener('force-susurro-mode', sub);
+  },
 
   // --- Screen Capture ---
   getSources: () => ipcRenderer.invoke('get-sources'),

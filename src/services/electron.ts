@@ -114,6 +114,11 @@ class ElectronService {
   onStopSusurro(callback: () => void) {
     return this.electron?.onStopSusurro(callback) || (() => {});
   }
+
+  onForceSusurroMode(callback: () => void) {
+    return this.electron?.onForceSusurroMode(callback) || (() => {});
+  }
+
   async generateSuggestion(data: { transcription: string, personaPrompt: string }) {
     return await this.handleResponse(this.electron?.generateSuggestion(data), '', 'generateSuggestion');
   }

@@ -132,6 +132,7 @@ function registerGlobalShortcuts(retryCount = 0) {
       windowManager.hideAllExcept(['susurro', 'suggestions']);
       win.show();
       win.focus();
+      win.webContents.send('force-susurro-mode');
     }
   })) allRegistered = false;
 

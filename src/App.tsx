@@ -10,6 +10,14 @@ const UnifiedApp: React.FC = () => {
   const windowType = urlParams.get('window');
   const [activeMode, setActiveMode] = useState<'chat' | 'susurro'>(windowType === 'susurro' ? 'susurro' : 'chat');
 
+  useEffect(() => {
+    if (globalThis.electronAPI) {
+      const sub = (_event: any) => setActiveMode('susurro');
+      globalThis.electronAPI.onForceSusurroMode?.(sub);
+      // We can't easily return the cleanup because globalThis.electronAPI.onForceSusurroMode returns it
+    }
+  }, []);
+
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: activeMode === 'chat' ? 'flex' : 'none', flex: 1, overflow: 'hidden' }}>
