@@ -1,6 +1,31 @@
-# Hades Agent
+<p align="center">
+  <img src="https://res.cloudinary.com/dmii83n8i/image/upload/fl_preserve_transparency/v1779237561/hades-agent_cx7vq7.jpg?_s=public-apps" alt="Hades Banner" width="100%" style="border-radius: 16px; max-width: 800px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
+</p>
 
-O Hades Agent é um assistente virtual inteligente para desktop (Windows), construído com Electron e React. Ele funciona como um "floating widget" que oferece chat de texto avançado e um poderoso modo de transcrição por voz com insights em tempo real via Gemini Live.
+<table>
+  <tr>
+    <td width="35%" align="center" valign="top">
+      <img src="public/icon/icon.png" width="280" style="border-radius: 40px; border: 5px solid #ff2a2a; box-shadow: 0 15px 40px rgba(255, 42, 42, 0.4); display: block; margin-bottom: 15px;" alt="Hades Agent Logo" />
+      <p align="center" style="margin-top: 10px; margin-bottom: 0;">
+        <img src="https://img.shields.io/badge/License-MIT-red?style=flat-square&color=150202" alt="License" style="display: inline-block; vertical-align: middle;" />
+        <img src="https://img.shields.io/badge/Electron-42.0-red?style=flat-square&logo=electron&logoColor=white&color=150202" alt="Electron" style="display: inline-block; vertical-align: middle;" />
+        <img src="https://img.shields.io/badge/React-19.0-red?style=flat-square&logo=react&logoColor=61DAFB&color=150202" alt="React" style="display: inline-block; vertical-align: middle;" />
+      </p>
+    </td>
+    <td width="65%" valign="top" style="padding-left: 20px;">
+      <h1 style="margin-top: 0; margin-bottom: 8px;">Hades Agent <img src="https://res.cloudinary.com/dmii83n8i/image/upload/v1779302517/hades-tray-icon-128_dks55n.png" width="36" height="36" align="center" style="display: inline-block; vertical-align: middle; margin-left: 6px;" alt="Hades Icon" /></h1>
+      <p><strong>O Hades Agent é um assistente virtual inteligente para desktop (Windows), construído com Electron e React. Ele funciona como um "floating widget" que oferece chat de texto avançado e um poderoso modo de transcrição por voz com insights em tempo real via Gemini Live.</strong></p>
+      <p><strong>Limites de Segurança:</strong> Sandboxed com <strong>zero acesso de gravação no sistema</strong> (não pode criar, editar ou deletar arquivos locais nativamente pelo chat). A inteligência foca inteiramente no suporte e produtividade da interface.</p>
+    </td>
+  </tr>
+</table>
+
+<p align="center" style="margin-top: 20px;">
+  <a href="https://github.com/victorl-dev/Hades-Agent/releases"><img src="https://img.shields.io/badge/Releases-Download-FF2A2A?style=for-the-badge&logo=github" alt="Releases"></a>
+  <a href="https://github.com/victorl-dev/Hades-Agent/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/victorl-dev/Hades-Agent"><img src="https://img.shields.io/badge/Built%20With-Gemini%20Live%20API-blueviolet?style=for-the-badge" alt="Built with Gemini Live"></a>
+  <a href="https://github.com/victorl-dev/Hades-Agent"><img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Platform: Windows"></a>
+</p>
 
 ## Key Features
 
