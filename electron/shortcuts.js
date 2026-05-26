@@ -132,8 +132,6 @@ function registerGlobalShortcuts(retryCount = 0) {
       windowManager.hideAllExcept(['susurro', 'suggestions']);
       win.show();
       win.focus();
-      // Sinaliza o frontend para iniciar a conexão imediatamente
-      win.webContents.send('start-susurro');
     }
   })) allRegistered = false;
 

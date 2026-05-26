@@ -1,0 +1,214 @@
+﻿commit a9a40d7d7729f8cef71e716d8e4141fe10845ae0
+Author: Victor Lobato <pixodevbusiness@gmail.com>
+Date:   Mon May 25 23:05:30 2026 -0300
+
+    feat: release v1.1.0 - Unified UI, Susurro Compact & Native Performance
+
+diff --git a/src/App.tsx b/src/App.tsx
+index 8377233..47149f6 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,12 +1,25 @@
+-import React, { useEffect } from 'react'
+-import CommandBar from './components/CommandBar'
++import React, { useEffect, useState } from 'react'
+ import MiniChat from './components/MiniChat'
+-import VoiceRecorder from './components/VoiceRecorder'
+ import Susurro from './components/Susurro'
+ import SuggestionsPopup from './components/SuggestionsPopup'
+ import Splash from './components/Splash'
+ import Settings from './components/Settings'
+ 
++const UnifiedApp: React.FC = () => {
++  const [activeMode, setActiveMode] = useState<'chat' | 'susurro'>('chat');
++
++  return (
++    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
++      <div style={{ display: activeMode === 'chat' ? 'flex' : 'none', flex: 1, overflow: 'hidden' }}>
++        <MiniChat activeMode={activeMode} onSwitchMode={setActiveMode} />
++      </div>
++      <div style={{ display: activeMode === 'susurro' ? 'flex' : 'none', flex: 1, overflow: 'hidden' }}>
++        <Susurro activeMode={activeMode} onSwitchMode={setActiveMode} />
++      </div>
++    </div>
++  );
++};
++
+ const App: React.FC = () => {
+   const urlParams = new URLSearchParams(globalThis.location.search)
+   const windowType = urlParams.get('window')
+@@ -24,15 +37,7 @@ const App: React.FC = () => {
+     return <Splash />
+   }
+ 
+-  if (windowType === 'chat') {
+-    return <MiniChat />
+-  }
+-
+-  if (windowType === 'voice') {
+-    return <VoiceRecorder />
+-  }
+-
+-  if (windowType === 'susurro') {
++  if (windowType === 'susurro-standalone') {
+     return <Susurro />
+   }
+ 
+@@ -44,7 +49,8 @@ const App: React.FC = () => {
+     return <Settings />
+   }
+ 
+-  return <CommandBar />
++  // Default is now UnifiedApp for 'chat', 'command' and 'susurro'
++  return <UnifiedApp />
+ }
+ 
+ export default App
+
+commit d47fea8c8c399dc83b3f2f1c09a5bfb2d2da2883
+Author: Victor Lobato <pixodevbusiness@gmail.com>
+Date:   Wed May 20 19:23:43 2026 -0300
+
+    fix: replace window with globalThis in App.tsx (ESLint no-restricted-globals)
+
+diff --git a/src/App.tsx b/src/App.tsx
+index 4875b66..8377233 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -16,7 +16,7 @@ const App: React.FC = () => {
+       `%c[HADES RENDERER] Window mounted: ${windowType || 'command'}`,
+       'color: #00ffcc; font-weight: bold; font-size: 14px;'
+     )
+-    console.log('[HADES RENDERER] Location:', window.location.href)
++    console.log('[HADES RENDERER] Location:', globalThis.location.href)
+     console.log('[HADES RENDERER] Document visibilityState:', document.visibilityState)
+   }, [windowType])
+ 
+
+commit 3d2ddd7ea1b4bf8640b090a850407637a4cd2a62
+Author: Victor Lobato <pixodevbusiness@gmail.com>
+Date:   Wed May 20 19:14:49 2026 -0300
+
+    fix: remove SusurroSetup import and route from App.tsx
+
+diff --git a/src/App.tsx b/src/App.tsx
+index 7c2a22d..4875b66 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -6,7 +6,6 @@ import Susurro from './components/Susurro'
+ import SuggestionsPopup from './components/SuggestionsPopup'
+ import Splash from './components/Splash'
+ import Settings from './components/Settings'
+-import SusurroSetup from './components/SusurroSetup'
+ 
+ const App: React.FC = () => {
+   const urlParams = new URLSearchParams(globalThis.location.search)
+@@ -37,10 +36,6 @@ const App: React.FC = () => {
+     return <Susurro />
+   }
+ 
+-  if (windowType === 'susurro-setup') {
+-    return <SusurroSetup />
+-  }
+-
+   if (windowType === 'suggestions') {
+     return <SuggestionsPopup />
+   }
+
+commit d4f0b53df06779e67a79a3ae478f68980ea4bcee
+Author: Victor Lobato <pixodevbusiness@gmail.com>
+Date:   Tue May 19 19:12:42 2026 -0300
+
+    chore: clean repository, enforce security rules, and optimize assets
+
+diff --git a/src/App.tsx b/src/App.tsx
+index e6c7a1e..7c2a22d 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,3 +1,4 @@
++import React, { useEffect } from 'react'
+ import CommandBar from './components/CommandBar'
+ import MiniChat from './components/MiniChat'
+ import VoiceRecorder from './components/VoiceRecorder'
+@@ -5,13 +6,21 @@ import Susurro from './components/Susurro'
+ import SuggestionsPopup from './components/SuggestionsPopup'
+ import Splash from './components/Splash'
+ import Settings from './components/Settings'
+-
+ import SusurroSetup from './components/SusurroSetup'
+ 
+ const App: React.FC = () => {
+   const urlParams = new URLSearchParams(globalThis.location.search)
+   const windowType = urlParams.get('window')
+ 
++  useEffect(() => {
++    console.log(
++      `%c[HADES RENDERER] Window mounted: ${windowType || 'command'}`,
++      'color: #00ffcc; font-weight: bold; font-size: 14px;'
++    )
++    console.log('[HADES RENDERER] Location:', window.location.href)
++    console.log('[HADES RENDERER] Document visibilityState:', document.visibilityState)
++  }, [windowType])
++
+   if (windowType === 'splash') {
+     return <Splash />
+   }
+
+commit cb703a9fd0da214196703247a6d03560f23d8a89
+Author: Victor Lobato <pixodevbusiness@gmail.com>
+Date:   Tue May 19 15:41:09 2026 -0300
+
+    feat: core UI implementations, stealth mode fixes, and window exclusion logic
+
+diff --git a/src/App.tsx b/src/App.tsx
+new file mode 100644
+index 0000000..e6c7a1e
+--- /dev/null
++++ b/src/App.tsx
+@@ -0,0 +1,46 @@
++import CommandBar from './components/CommandBar'
++import MiniChat from './components/MiniChat'
++import VoiceRecorder from './components/VoiceRecorder'
++import Susurro from './components/Susurro'
++import SuggestionsPopup from './components/SuggestionsPopup'
++import Splash from './components/Splash'
++import Settings from './components/Settings'
++
++import SusurroSetup from './components/SusurroSetup'
++
++const App: React.FC = () => {
++  const urlParams = new URLSearchParams(globalThis.location.search)
++  const windowType = urlParams.get('window')
++
++  if (windowType === 'splash') {
++    return <Splash />
++  }
++
++  if (windowType === 'chat') {
++    return <MiniChat />
++  }
++
++  if (windowType === 'voice') {
++    return <VoiceRecorder />
++  }
++
++  if (windowType === 'susurro') {
++    return <Susurro />
++  }
++
++  if (windowType === 'susurro-setup') {
++    return <SusurroSetup />
++  }
++
++  if (windowType === 'suggestions') {
++    return <SuggestionsPopup />
++  }
++
++  if (windowType === 'settings') {
++    return <Settings />
++  }
++
++  return <CommandBar />
++}
++
++export default App

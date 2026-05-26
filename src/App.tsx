@@ -6,7 +6,9 @@ import Splash from './components/Splash'
 import Settings from './components/Settings'
 
 const UnifiedApp: React.FC = () => {
-  const [activeMode, setActiveMode] = useState<'chat' | 'susurro'>('chat');
+  const urlParams = new URLSearchParams(globalThis.location.search);
+  const windowType = urlParams.get('window');
+  const [activeMode, setActiveMode] = useState<'chat' | 'susurro'>(windowType === 'susurro' ? 'susurro' : 'chat');
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
